@@ -1,6 +1,6 @@
 import openai
 import os
-import google.genai as genai
+import google.generativeai  as genai
 from utils.manage_keys import get_credential
 
 api_key = get_credential("AiAPIKey")

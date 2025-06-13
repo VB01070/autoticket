@@ -1,6 +1,7 @@
 import flet as ft
 from utils.manage_keys import save_credentials, get_credential, delete_credential
 import requests
+import google.generativeai  as genai
 
 
 def save_ai_key(page, key, e, reset_callback):
@@ -37,26 +38,48 @@ def save_ai_key(page, key, e, reset_callback):
 
 
 def check_ai_key(page, e):
+    assistant = page.app_state.ai_assistant
+    print(assistant)
     cred = get_credential("AiAPIKey")
     if cred:
-        headers = {"Authorization": f"Bearer {cred}"}
-        response = requests.get("https://api.openai.com/v1/models", headers=headers)
-        if response.status_code == 200:
-            page.snack_bar.content = ft.Row(
-                controls=[
-                    ft.Icon(name=ft.Icons.VERIFIED, color=ft.Colors.WHITE),
-                    ft.Text("API Key present in Windows Credential Manager, is still valid!", size=14)
-                ]
-            )
-            page.snack_bar.bgcolor = ft.Colors.GREEN_300
-        else:
-            page.snack_bar.content = ft.Row(
-                controls=[
-                    ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
-                    ft.Text("API Key present in Windows Credential Manager, is no longer valid!", size=14)
-                ]
-            )
-            page.snack_bar.bgcolor = ft.Colors.ORANGE_300
+        if assistant == "GPT":
+            headers = {"Authorization": f"Bearer {cred}"}
+            response = requests.get("https://api.openai.com/v1/models", headers=headers)
+            if response.status_code == 200:
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.VERIFIED, color=ft.Colors.WHITE),
+                        ft.Text("API Key present in Windows Credential Manager, is still valid!", size=14)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.GREEN_300
+            else:
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
+                        ft.Text("API Key present in Windows Credential Manager, is no longer valid!", size=14)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.ORANGE_300
+        elif assistant == "Gemini":
+            try:
+                genai.configure(api_key=cred)
+                _ = genai.list_models()
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.VERIFIED, color=ft.Colors.WHITE),
+                        ft.Text("API Key present in Windows Credential Manager, is still valid!", size=14)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.GREEN_300
+            except Exception as e:
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
+                        ft.Text("API Key present in Windows Credential Manager, is no longer valid!", size=14)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.ORANGE_300
     else:
         page.snack_bar.content = ft.Row(
             controls=[
