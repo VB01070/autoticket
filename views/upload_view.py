@@ -220,7 +220,7 @@ class UploadView:
         self.app_state.page.image_preview = image_preview
 
         prev_image_button = ft.IconButton(
-            icon=ft.icons.ARROW_CIRCLE_LEFT_OUTLINED,
+            icon=ft.Icons.ARROW_CIRCLE_LEFT_OUTLINED,
             on_click=lambda e: previous_image(page=e.page, e=e),
             disabled=True,
             tooltip="Previous Image",
@@ -237,7 +237,7 @@ class UploadView:
         self.app_state.page.prev_image_button = prev_image_button
 
         next_image_button = ft.IconButton(
-            icon=ft.icons.ARROW_CIRCLE_RIGHT_OUTLINED,
+            icon=ft.Icons.ARROW_CIRCLE_RIGHT_OUTLINED,
             on_click=lambda e: next_image(page=e.page, e=e),
             disabled=True,
             tooltip="Next Image",

@@ -40,12 +40,12 @@ class CacheView:
         self.result_count = ft.Text(value="Search to display results", size=12, italic=True)
         self.page_number  = ft.Text(value="Page 1", size=12)
         self.prev_button = ft.IconButton(
-            ft.icons.NAVIGATE_BEFORE,
+            ft.Icons.NAVIGATE_BEFORE,
             on_click=self.prev_page,
             disabled=True
         )
         self.next_button = ft.IconButton(
-            ft.icons.NAVIGATE_NEXT,
+            ft.Icons.NAVIGATE_NEXT,
             on_click=self.next_page,
             disabled=True
         )

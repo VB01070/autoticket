@@ -48,17 +48,17 @@ class TemplatePage:
         # Navigation Rail
         nav_rail = ft.NavigationRail(
             selected_index=self.selected_index,
-            label_type=ft.NavigationRailLabelType.ALL,
+            label_type=ft.NavigationRailLabelType.NONE,
             destinations=[
-                ft.NavigationRailDestination(icon=ft.Icons.HOME, label="Home"),
-                ft.NavigationRailDestination(icon=ft.Icons.UPLOAD, label="Upload"),
-                ft.NavigationRailDestination(icon=ft.Icons.SCIENCE, label="Test"),
-                ft.NavigationRailDestination(icon=ft.Icons.BUG_REPORT, label="Vulns"),
-                ft.NavigationRailDestination(icon=ft.Icons.SYNC_ALT, label="Migration"),
-                ft.NavigationRailDestination(icon=ft.Icons.DATASET, label="Cache"),
-                ft.NavigationRailDestination(icon=ft.Icons.ASSIGNMENT, label="Reporting"),
-                ft.NavigationRailDestination(icon=ft.Icons.SETTINGS, label="Setting"),
-                ft.NavigationRailDestination(icon=ft.Icons.REFRESH, label="Restart"),
+                ft.NavigationRailDestination(icon=ft.Icons.HOME_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.HOME, tooltip="Home", color=ft.Colors.GREEN), label="Home"),
+                ft.NavigationRailDestination(icon=ft.Icons.UPLOAD_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.UPLOAD, tooltip="Upload", color=ft.Colors.GREEN), label="Upload"),
+                ft.NavigationRailDestination(icon=ft.Icons.SCIENCE_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.SCIENCE, tooltip="Test", color=ft.Colors.GREEN), label="Test"),
+                ft.NavigationRailDestination(icon=ft.Icons.BUG_REPORT_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.BUG_REPORT, tooltip="Vulns", color=ft.Colors.GREEN), label="Vulns"),
+                ft.NavigationRailDestination(icon=ft.Icons.SYNC_ALT_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.SYNC_ALT, tooltip="Migration", color=ft.Colors.GREEN), label="Migration"),
+                ft.NavigationRailDestination(icon=ft.Icons.DATASET_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.DATASET, tooltip="Cache", color=ft.Colors.GREEN), label="Cache"),
+                ft.NavigationRailDestination(icon=ft.Icons.ASSIGNMENT_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.ASSIGNMENT, tooltip="Reporting", color=ft.Colors.GREEN), label="Reporting"),
+                ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.SETTINGS, tooltip="Setting", color=ft.Colors.GREEN), label="Setting"),
+                ft.NavigationRailDestination(icon=ft.Icons.REFRESH_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.REFRESH, tooltip="Restart", color=ft.Colors.GREEN), label="Restart"),
             ],
             on_change=on_nav_change,
         )
@@ -81,7 +81,7 @@ class TemplatePage:
             expand=True,
             vertical_alignment=ft.CrossAxisAlignment.STRETCH,
             controls=[
-                ft.Container(width=90, content=nav_rail),
+                ft.Container(width=70, content=nav_rail),
                 ft.VerticalDivider(width=1),
                 ft.Container(
                     expand=True,
