@@ -1,0 +1,18 @@
+ReportTemplates:
+    reportTemplateFile: Templates/Generic/TemplateReport.html
+    riskTableTemplateFile: Templates/Generic/TemplateRiskTable.html
+    findingTableTemplateFile: Templates/Generic/TemplateFindingTable.html
+    findingDueTableTemplateFile: Templates/Generic/TemplateFindingDueTable.html
+    findingTemplateFile: Templates/Generic/TemplateFinding.html
+    methodologyFile: Templates/Advsim/Methodology.html
+    appendixFile: Templates/Advsim/Appendix.html
+ReportVulnTemplates:
+    reportVulnTemplateFile: Templates/Advsim/TemplateVulnReport.html
+    findingVulnTemplateFile: Templates/Generic/TemplateVulnFinding.html
+ReportOutputFolder: Reports/AdvSimReports
+
+infoDueDate: 270
+lowDueDate: 60
+mediumDueDate: 45
+highDueDate: 30
+criticalDueDate: 14

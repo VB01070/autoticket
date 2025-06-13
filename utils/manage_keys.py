@@ -1,0 +1,30 @@
+import keyring
+from keyring.errors import KeyringError
+
+SERVICE_NAME = "AutoTicketApp"
+
+
+def save_credentials(username: str, password: str):
+    try:
+        keyring.set_password(SERVICE_NAME, username, password)
+        return True
+    except KeyringError as e:
+        print(f"Keyring error: {e}")
+        return False
+
+
+def get_credential(username: str) -> str:
+    try:
+        return keyring.get_password(SERVICE_NAME, username)
+    except KeyringError as e:
+        print(f"Error retrieving credential: {e}")
+        return None
+
+
+def delete_credential(username: str):
+    try:
+        keyring.delete_password(SERVICE_NAME, username)
+        return True
+    except KeyringError as e:
+        print(f"Keyring error: {e}")
+        return False
