@@ -1,7 +1,7 @@
 import openai
-import os
 import google.generativeai  as genai
 from utils.manage_keys import get_credential
+import json
 
 api_key = get_credential("AiAPIKey")
 
@@ -62,8 +62,29 @@ Always respond with only valid JSON. Do not include labels, explanations, or ext
         content = response.choices[0].message.content.strip()
         return content or '{"error": "Empty AI Response"}'
     elif model == "Gemini":
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(prompt)
-        content = response.choices[0].message.content.strip()
-        return content or '{"error": "Empty AI Response"}'
+        try:
+            genai.configure(api_key=api_key)
+            gemini_model_name = "gemini-2.0-flash"
+            model = genai.GenerativeModel(gemini_model_name)
+            generation_config = genai.GenerationConfig(temperature=0.4)
+            response = model.generate_content(prompt, generation_config=generation_config)
+            raw_content = response.text.strip()
+
+            if raw_content.startswith('```json') and raw_content.endswith('```'):
+                content = raw_content[len('```json'):-len('```')].strip()
+            elif raw_content.startswith('```') and raw_content.endswith('```'):
+                content = raw_content[len('```'):-len('```')].strip()
+            else:
+                content = raw_content
+
+            try:
+                json_object = json.loads(content)
+                return json.dumps(json_object)
+            except json.JSONDecodeError:
+                print(f"Warning: Gemini response was not valid JSON after stripping markdown: {content[:200]}...")
+                return f'{{"error": "Gemini response was malformed JSON.", "raw_response": {json.dumps(content)}}}'
+        except Exception as e:
+            print(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
+            return f'{{"error": "Gemini API Error: {e}"}}'
+
+    return '{"error": "Unsupported AI model type"}'

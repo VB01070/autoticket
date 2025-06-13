@@ -100,7 +100,7 @@ def load_local_document(page, e):
 def on_browse(page, e):
     print("[DEBUG] on_browse called")
 
-    page.app_state.current_folder = "1OY2KNblRKX5c71bZjXEEzlqbxVJgNKem"
+    page.app_state.current_folder = "1LvaID3TriOjpgrqBHkCKk6niC6tJfJLt"
     page.app_state.folder_stack = []
 
     def load_drive_folder(page):

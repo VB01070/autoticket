@@ -12,6 +12,7 @@ def save_google_key(file_path):
         with open(file_path, "rb") as f:
             raw_bytes = f.read()
         encoded = base64.b64encode(raw_bytes).decode("utf-8")
+        print(encoded)
         save_credentials("GoogleKey", encoded)
         return True
     except Exception as e:
