@@ -63,7 +63,6 @@ def delete_dashboard_key(page, e):
 
 def check_dashboard_key(page, e):
     creds = get_credential("DashboardAPIKey")
-    print(creds)
     if creds:
         headers = {"x-api-key": creds}
         response = requests.post(f"{BASE_URL}/api/v3/health", headers=headers)
