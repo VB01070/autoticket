@@ -39,7 +39,7 @@ class SettingsView:
                     controls=[
                         ft.Row([
                             ft.Icon(icon, size=20),
-                            ft.Text(title, style="titleSmall", expand=True)
+                            ft.Text(title, theme_style="titleSmall", expand=True)
                         ]),
                         ft.Divider(),
                         *body_controls,

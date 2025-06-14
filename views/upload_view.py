@@ -205,7 +205,7 @@ class UploadView:
         self.app_state.document_content = document_content
         self.app_state.page.document_content = document_content
 
-        image_preview_text = ft.Text("Image Preview", style=ft.TextThemeStyle.HEADLINE_SMALL)
+        image_preview_text = ft.Text("Image Preview", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
 
         placeholder_b64_image = placeholder_b64()
 
