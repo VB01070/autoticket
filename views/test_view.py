@@ -70,7 +70,6 @@ class TestView:
                 ft.dropdown.Option("RDP"),
                 ft.dropdown.Option("Other..."),
             ],
-            options_fill_horizontally=True,
             expand=True
         )
 
@@ -114,7 +113,6 @@ class TestView:
                 ft.dropdown.Option(key=grey_box_tag_uuid, text="Grey Box"),
                 ft.dropdown.Option(key=white_box_tag_uuid, text="White Box"),
             ],
-            options_fill_horizontally=True,
             expand=True
         )
 
