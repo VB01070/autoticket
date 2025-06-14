@@ -88,7 +88,7 @@ class TemplatePage:
                     padding=20,
                     content=ft.Column([
                         ft.Row([
-                            ft.Text(self.app_state.current_view_title, style="headlineMedium", expand=True),
+                            ft.Text(self.app_state.current_view_title, theme_style="headlineMedium", expand=True),
                             self.info_progress,
                             ft.FilledTonalButton(
                                 content=ft.Container(
