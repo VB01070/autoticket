@@ -17,14 +17,14 @@ def edit_details(page, e):
     if not management_summary:
         management_summary = ""
 
-    test_details_body = f"[DETAILS]\r\n\r\nServiceNow Request ID: {servicenow_id}.\r\n"
-    test_details_body += f"Connection Type: {connection_type}\r\n"
+    test_details_body = f"[DETAILS]<br><br>ServiceNow Request ID: {servicenow_id}.<br>"
+    test_details_body += f"Connection Type: {connection_type}<br>"
     if page.app_state.testing_account_switch.value:
-        test_details_body += f"Test Accounts: Yes\r\n"
+        test_details_body += f"Test Accounts: Yes<br>"
     else:
-        test_details_body += f"Test Accounts: No\r\n"
-    test_details_body += f"Account Roles: {account_roles}\r\n\r\n"
-    test_details_body += f"[MANAGEMENT SUMMARY]\r\n{management_summary}"
+        test_details_body += f"Test Accounts: No<br>"
+    test_details_body += f"Account Roles: {account_roles}<br><br>"
+    test_details_body += f"[MANAGEMENT SUMMARY]<br><br>{management_summary}"
 
     service_tag = page.app_state.service_tag_dropdown.value
     if not service_tag:

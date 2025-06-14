@@ -11,9 +11,13 @@ class HomeView:
         dummy_card = ft.Container(
             expand=True,
             padding=20,
-            bgcolor=ft.Colors.INDIGO_50,
+            bgcolor=ft.Colors.SURFACE,
             content=ft.Column(
                 [
+                    ft.Row([
+                        ft.Icon(name=ft.Icons.CAMPAIGN_OUTLINED, size=40, color=ft.Colors.GREEN),
+                        ft.Text("What's New", size=38, weight=ft.FontWeight.BOLD),
+                    ]),
                     ft.Markdown(
                         markdown_text,
                         selectable=True,
