@@ -46,7 +46,7 @@ def render_vuln_table(page, vuln_data):
     page.app_state.select_all_checkbox = ft.Checkbox(label=" ", value=False, on_change=on_select_all_change)
     page.app_state.publish_selected_button = ft.IconButton(
         tooltip="Publish Selected Vulnerabilities",
-        icon=ft.icons.PUBLISH,
+        icon=ft.Icons.PUBLISH,
         on_click=lambda e: publish_selected_vulns(page),
         hover_color=ft.Colors.ORANGE_ACCENT_100,
     )
@@ -86,10 +86,10 @@ def render_vuln_table(page, vuln_data):
             ft.DataColumn(ft.Text("Title")),
         ],
         rows=rows,
-        heading_row_color=ft.colors.BLUE_GREY_50,
-        border=ft.border.all(1, ft.colors.BLUE_GREY_100),
+        heading_row_color=ft.Colors.BLUE_GREY_50,
+        border=ft.border.all(1, ft.Colors.BLUE_GREY_100),
         column_spacing=15,
-        horizontal_lines=ft.BorderSide(1, ft.colors.BLUE_GREY_100),
+        horizontal_lines=ft.BorderSide(1, ft.Colors.BLUE_GREY_100),
     )
 
     page.app_state.vuln_table_container.content = ft.Container(
@@ -108,8 +108,8 @@ def render_vuln_table(page, vuln_data):
             auto_scroll=False,
         ),
         padding=10,
-        border=ft.border.all(1, ft.colors.BLUE_GREY_200),
-        bgcolor=ft.colors.WHITE,
+        border=ft.border.all(1, ft.Colors.BLUE_GREY_200),
+        bgcolor=ft.Colors.WHITE,
     )
 
     page.update()

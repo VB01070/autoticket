@@ -5,7 +5,7 @@ import flet as ft
 
 def fetch_vulns_by_test(page, test_uuid):
     if not test_uuid:
-        page.snack_bar = ft.SnackBar(ft.Text("Test UUID is missing!"), bgcolor=ft.colors.RED)
+        page.snack_bar = ft.SnackBar(ft.Text("Test UUID is missing!"), bgcolor=ft.Colors.RED)
         page.snack_bar.open = True
         page.update()
         return
@@ -17,6 +17,6 @@ def fetch_vulns_by_test(page, test_uuid):
 
     except Exception as e:
         print(f"Error fetching vulns: {e}")
-        page.snack_bar = ft.SnackBar(ft.Text(f"Error fetching vulnerabilities"), bgcolor=ft.colors.RED)
+        page.snack_bar = ft.SnackBar(ft.Text(f"Error fetching vulnerabilities"), bgcolor=ft.Colors.RED)
         page.snack_bar.open = True
         page.update()

@@ -10,8 +10,8 @@ def view_payload(page, e):
     # Build the payload dynamically
     finding = page.app_state.findings[page.app_state.current_finding_index]
     print("[DEBUG] Finding loaded")
-    for f in finding:
-        print(f"[DEBUG] {f}")
+    # for f in finding:
+    #     print(f"[DEBUG] {f}")
     # ai_data = app.latest_ai_data
     ai_raw = page.app_state.ai_suggestions[page.app_state.current_finding_index]
     ai_edit = page.app_state.ai_suggestions_editable[page.app_state.current_finding_index]
@@ -27,7 +27,7 @@ def view_payload(page, e):
         ai_data = ai_raw
 
     print("[DEBUG] AI data loaded")
-    print(f"f[DEBUG] {ai_data}")
+    # print(f"f[DEBUG] {ai_data}")
     uuids = {
         "asset": page.app_state.asset_uuid,
         "vuln_type": page.app_state.vuln_type_uuids[page.app_state.current_finding_index]["vuln_type"],
@@ -37,7 +37,7 @@ def view_payload(page, e):
     print(f"[DEBUG] UUIDs: {uuids}")
     payload = build_payload(finding, ai_data, uuids, vuln_type_name=None)
     print("[DEBUG] Payload built")
-    print(f"[DEBUG] {payload}")
+    # print(f"[DEBUG] {payload}")
     # Convert to pretty JSON
     payload_json = json.dumps(payload, indent=4)
     print(f"[DEBUG] Payload json: {payload_json}")

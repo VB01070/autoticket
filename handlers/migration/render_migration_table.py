@@ -84,10 +84,10 @@ def render_migration_table(page, vuln_data):
                         ft.DataColumn(ft.Text("GIS Asset")),
                     ],
                     rows=rows,
-                    heading_row_color=ft.colors.BLUE_GREY_50,
-                    border=ft.border.all(1, ft.colors.BLUE_GREY_100),
+                    heading_row_color=ft.Colors.BLUE_GREY_50,
+                    border=ft.border.all(1, ft.Colors.BLUE_GREY_100),
                     column_spacing=15,
-                    horizontal_lines=ft.BorderSide(1, ft.colors.BLUE_GREY_100),
+                    horizontal_lines=ft.BorderSide(1, ft.Colors.BLUE_GREY_100),
                 ))
             ],
             expand=True,
@@ -96,7 +96,7 @@ def render_migration_table(page, vuln_data):
             auto_scroll=False,
         ),
         padding=10,
-        border=ft.border.all(1, ft.colors.BLUE_GREY_200),
-        bgcolor=ft.colors.WHITE,
+        border=ft.border.all(1, ft.Colors.BLUE_GREY_200),
+        bgcolor=ft.Colors.WHITE,
     )
     page.update()
