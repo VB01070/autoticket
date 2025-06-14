@@ -1,86 +1,30 @@
 markdown_text = """
-# **Goal**
+# **What's New**
 
-- Minimize the interaction with Keep Secure 24 
-- Have a centralize application that perform most of the administrative task we daily face.
+- Application Update Notification
+- Using Gemini
+- Fix deprecated flet components
 
-# **Authentication**
 
-#### ***Disclaimer***
-The application is suppose to run on our Windows machine. All the secrets will be saved into a 
-Window Credentials Manager.
+# **To Do**
 
-Technically it will work als on Linux (GNOME Keyring or KWallet) and macOS (Keychain).
+- Adjust the Test Details (the details on the keep secure 24 appear on one unique line, need to check if the break are in the right point.)
+- Ai generate Management summary (from where to load the vulnerabilities? it would be easy probably to fetch them directly from the dashboard.)
+- Publish migrate vulnerability, delete the migrated vulnerability from the market
+- List of the most used Asset form GIS (need assistance from the team)
+- Move presentation and report to drive
 
-- Keep Secure API Key
-- AI API Key
-- Google Desktop Auth
 
-### ***Keep Secure and AI API Keys***
+# **BUGS**
 
-These are saved directly into the Window Credentials Manager. No much to add
+- The Migrate page does not reload properly
+- Some error when reset button is pushed
 
-### ***Google Desktop Auth***
+# **Problem**
 
-This is not the classic service account of Google.
-These are credentials that allows a Desktop application (third party) to interact with Google service. 
-In our case mainly Drive.
-The application, that is not published but is a testing state, by default it does allow only the tester to utilize 
-these credentials for interact with the Google service.
+- The Desktop auth from google do not allow the application to access Drive. We need to authorize it. So load note from drive and move the report to drive is out of the book for the moment.
 
-##### ***How does it work?***
+# **Ideas**
 
-The first time the application call a Google service, a browser it will open for Google authentication.
-If the user that authenticate in Google is part of the tester, will be allowed to utilize the service otherwise Google 
-will not allow.
-
-The json file is encode in base64 and saved in the Window Credentials Manager. In the moment of bne utilize, 
-it get decode, a temporary json is created and utilized for authenticate in Google, and after that destroy.
-
-After the first time authenticating, the app will create a token, for avoid authenticate in the future.
-The time to live of the token is strictly relate to the time to live of the password, once the password is changed 
-the token is invalid.
-Alternative the token can be deleted manually
-
-# **Upload vulnerability**
-
-- Utilize a standard template to fetch the finding note.
-- The note should contains at the first page, Organisation, Asset and Test uuid, the following for each finding Title, 
-Severity, Note and Images.
-- The note can be load from local storage or google drive.
-
-Once load the application try to match, based on the title, the finding to a vulnerability type.
-For the ones the match is not possible the user can manually add the vulnerability type.
-
-All the notes are send, along with the relate template of the vulnerability type, to the AI assistance, that utilize 
-the information in the note and in the template for build a description, and impact an recommendation. 
-The template information are the baseline for all of three sections.
-It will suggest some reference (NOT VERIFY THE LINK)
-Not all Vulnerability types as template, not all template are complete.
-If the template is missing or some part of it is missing the AI Assistant will fill in the rest accordingly.
-
-Once return the response, is still possible to modify the AI Assistance response before to upload the finding.
-All the finding are upload along the with the images in a Ready to Publish state.
-
-# **Test**
-
-Function that allow to insert into the Test details on Keep Secure 24, all the necessary information needed for 
-reporting.
-
-# **Publish and delete Vulnerability**
-
-Function that allow to publish or delete single vulnerability or more vulnerability within the same test.
-The requirement for publish a vulnerability is that the "state" is set on Ready to be Publish.
-This can't be set via API
-
-# **Migration**
-
-Manage the migration of one or more vulnerability within a specific test to global.
-This it will automatically create, and publish the vulnerability in the specific Global Asset, and delete the original 
-from the market.
-
-# **Reporting**
-
-It generate slide and pdf for the finding meeting and the report.
-At the moment it save both locally.
+- Logs the event
 """
