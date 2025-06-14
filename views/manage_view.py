@@ -179,22 +179,22 @@ class ManageView:
             expand=True,
             spacing=20,
             controls=[
-                ft.Container(
-                    bgcolor=ft.Colors.INDIGO_50,
-                    expand=True,
-                    padding=10,
-                    content=ft.Column(
-                        expand=True,
-                        horizontal_alignment=ft.CrossAxisAlignment.START,
-                        spacing=10,
-                        controls=[
-                            modify_vuln_text,
-                            ft.Divider(),
-                            vuln_uuid_text_field,
-                            ft.Row([publish_vuln_button, delete_vuln_button, ft.Container(expand=True)]),
-                        ]
-                    )
-                ),
+                # ft.Container(
+                #     bgcolor=ft.Colors.INDIGO_50,
+                #     expand=True,
+                #     padding=10,
+                #     content=ft.Column(
+                #         expand=True,
+                #         horizontal_alignment=ft.CrossAxisAlignment.START,
+                #         spacing=10,
+                #         controls=[
+                #             modify_vuln_text,
+                #             ft.Divider(),
+                #             vuln_uuid_text_field,
+                #             ft.Row([publish_vuln_button, delete_vuln_button, ft.Container(expand=True)]),
+                #         ]
+                #     )
+                # ),
                 ft.Container(
                     bgcolor=ft.Colors.INDIGO_50,
                     expand=True,
