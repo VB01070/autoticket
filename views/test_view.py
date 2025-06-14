@@ -60,15 +60,15 @@ class TestView:
         self.app_state.servicenow_id_text_field = servicenow_id_text_field
         self.app_state.page.servicenow_id_text_field = servicenow_id_text_field
 
-        connection_type_dropdown = ft.DropdownM2(
+        connection_type_dropdown = ft.Dropdown(
             label="Connection Type",
             options=[
-                ft.dropdownm2.Option("Public"),
-                ft.dropdownm2.Option("VPN"),
-                ft.dropdownm2.Option("TeamViewer"),
-                ft.dropdownm2.Option("IP WhiteList"),
-                ft.dropdownm2.Option("RDP"),
-                ft.dropdownm2.Option("Other..."),
+                ft.dropdown.Option("Public"),
+                ft.dropdown.Option("VPN"),
+                ft.dropdown.Option("TeamViewer"),
+                ft.dropdown.Option("IP WhiteList"),
+                ft.dropdown.Option("RDP"),
+                ft.dropdown.Option("Other..."),
             ],
             options_fill_horizontally=True,
             expand=True
@@ -106,13 +106,13 @@ class TestView:
         self.app_state.management_summary_text_field = management_summary_text_field
         self.app_state.page.management_summary_text_field = management_summary_text_field
 
-        service_tag_dropdown = ft.DropdownM2(
+        service_tag_dropdown = ft.Dropdown(
             label="Service Tags",
             options=[
-                ft.dropdownm2.Option(key=adversary_simulation_tag_uuid, text="Adversary Simulation"),
-                ft.dropdownm2.Option(key=black_box_tag_uuid, text="Black Box"),
-                ft.dropdownm2.Option(key=grey_box_tag_uuid, text="Grey Box"),
-                ft.dropdownm2.Option(key=white_box_tag_uuid, text="White Box"),
+                ft.dropdown.Option(key=adversary_simulation_tag_uuid, text="Adversary Simulation"),
+                ft.dropdown.Option(key=black_box_tag_uuid, text="Black Box"),
+                ft.dropdown.Option(key=grey_box_tag_uuid, text="Grey Box"),
+                ft.dropdown.Option(key=white_box_tag_uuid, text="White Box"),
             ],
             options_fill_horizontally=True,
             expand=True
