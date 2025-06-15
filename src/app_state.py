@@ -30,4 +30,4 @@ class AppState:
         self.folder_stack = []
         self.current_items = []
         self.fetched_migration_vulns = None
-        self.app_version = "0.2a"
+        self.app_version = "0.2b"

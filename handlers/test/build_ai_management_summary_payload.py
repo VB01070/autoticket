@@ -76,6 +76,7 @@ def build_ai_management_summary_payload(page, e, test_uuid):
                 summary_text = json_object.get("summary", "Error: 'summary' key not found.")
                 page.app_state.info_progress.visible = False
                 page.app_state.management_summary_text_field.value = summary_text
+                page.app_state.edit_ai_summary_button.disabled = False
                 page.snack_bar.content = ft.Text("All Good!")
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
 

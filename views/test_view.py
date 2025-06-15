@@ -8,6 +8,7 @@ from utils.service_tag_references import (
 )
 from handlers.test.edit_details import edit_details
 from handlers.test.build_ai_management_summary_payload import build_ai_management_summary_payload
+from handlers.test.ai_summary_editable import edit_summary, save_ai_edit_summary
 
 
 class TestView:
@@ -100,7 +101,7 @@ class TestView:
             multiline=True,
             min_lines=10,
             max_lines=10,
-            read_only=False
+            read_only=True
         )
 
         self.app_state.management_summary_text_field = management_summary_text_field
@@ -125,7 +126,7 @@ class TestView:
                 padding=ft.Padding(0, 0, 0, 0),
                 content=ft.Row(
                     controls=[
-                        ft.Icon(name=ft.Icons.SMART_TOY),
+                        ft.Icon(name=ft.Icons.SMART_TOY_OUTLINED),
                         ft.Text("Ai Assistance", size=12)
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
@@ -135,19 +136,72 @@ class TestView:
             on_click=lambda e: build_ai_management_summary_payload(e.page, e, test_uuid_text_field.value),
             style=ft.ButtonStyle(
                 bgcolor={
-                    ft.ControlState.HOVERED: ft.Colors.GREEN_100,
+                    ft.ControlState.HOVERED: ft.Colors.AMBER_ACCENT_100,
                     ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
                 }
             )
         )
 
-        save_test_details_button = ft.FilledTonalButton(
+        self.app_state.generate_ai_summary_button = generate_ai_summary_button
+        self.app_state.page.generate_ai_summary_button = generate_ai_summary_button
+
+        edit_ai_summary_button = ft.FilledTonalButton(
             content=ft.Container(
                 padding=ft.Padding(0, 0, 0, 0),
                 content=ft.Row(
                     controls=[
-                        ft.Icon(name=ft.Icons.SAVE),
+                        ft.Icon(name=ft.Icons.EDIT_NOTE_OUTLINED),
+                        ft.Text("Edit Summary", size=12)
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=2
+                )
+            ),
+            on_click=lambda e: edit_summary(e.page, e),
+            style=ft.ButtonStyle(
+                bgcolor={
+                    ft.ControlState.HOVERED: ft.Colors.ORANGE_100,
+                    ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
+                }
+            ),
+            disabled=True
+        )
+
+        self.app_state.edit_ai_summary_button = edit_ai_summary_button
+        self.app_state.page.edit_ai_summary_button = edit_ai_summary_button
+
+        save_edit_ai_summary_button = ft.FilledTonalButton(
+            content=ft.Container(
+                padding=ft.Padding(0, 0, 0, 0),
+                content=ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.SAVE_OUTLINED),
                         ft.Text("Save Changes", size=12)
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=2
+                )
+            ),
+            on_click=lambda e: save_ai_edit_summary(e.page, e),
+            style=ft.ButtonStyle(
+                bgcolor={
+                    ft.ControlState.HOVERED: ft.Colors.ORANGE_100,
+                    ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
+                }
+            ),
+            disabled=True
+        )
+
+        self.app_state.save_edit_ai_summary_button = save_edit_ai_summary_button
+        self.app_state.page.save_edit_ai_summary_button = save_edit_ai_summary_button
+
+        upload_test_details_button = ft.FilledTonalButton(
+            content=ft.Container(
+                padding=ft.Padding(0, 0, 0, 0),
+                content=ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.UPLOAD_OUTLINED),
+                        ft.Text("Upload Test Details", size=12)
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=2
@@ -156,11 +210,14 @@ class TestView:
             on_click=lambda e: edit_details(e.page, e),
             style=ft.ButtonStyle(
                 bgcolor={
-                    ft.ControlState.HOVERED: ft.Colors.GREEN_100,
+                    ft.ControlState.HOVERED: ft.Colors.GREEN_ACCENT_100,
                     ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
                 }
             )
         )
+
+        self.app_state.upload_test_details_button = upload_test_details_button
+        self.app_state.page.upload_test_details_button = upload_test_details_button
 
         first_row = ft.Row(
             expand=True,
@@ -180,7 +237,15 @@ class TestView:
                             ft.Row([test_uuid_text_field, load_test_uuid_button, servicenow_id_text_field], expand=True),
                             ft.Row([ connection_type_dropdown, service_tag_dropdown, testing_account_switch, account_role_text_field], expand=True),
                             management_summary_text_field,
-                            ft.Row([generate_ai_summary_button, save_test_details_button, ft.Container(expand=True)])
+                            ft.Row(
+                                [
+                                    generate_ai_summary_button,
+                                    upload_test_details_button,
+                                    edit_ai_summary_button,
+                                    save_edit_ai_summary_button,
+                                    ft.Container(expand=True)
+                                ]
+                            )
                         ]
                     ),
                 )
