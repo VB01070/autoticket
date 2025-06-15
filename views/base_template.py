@@ -58,6 +58,7 @@ class TemplatePage:
                 ft.NavigationRailDestination(icon=ft.Icons.DATASET_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.DATASET, tooltip="Cache", color=ft.Colors.GREEN), label="Cache"),
                 ft.NavigationRailDestination(icon=ft.Icons.ASSIGNMENT_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.ASSIGNMENT, tooltip="Reporting", color=ft.Colors.GREEN), label="Reporting"),
                 ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.SETTINGS, tooltip="Setting", color=ft.Colors.GREEN), label="Setting"),
+                ft.NavigationRailDestination(icon=ft.Icons.INFO_OUTLINE, selected_icon=ft.Icon(name=ft.Icons.INFO_OUTLINE, tooltip="About", color=ft.Colors.GREEN), label="About"),
                 ft.NavigationRailDestination(icon=ft.Icons.REFRESH_OUTLINED, selected_icon=ft.Icon(name=ft.Icons.REFRESH, tooltip="Restart", color=ft.Colors.GREEN), label="Restart"),
             ],
             on_change=on_nav_change,

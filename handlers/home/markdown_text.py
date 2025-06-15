@@ -1,6 +1,10 @@
 markdown_text = """
 
 
+###### ***version 0.2c***
+- Add About view
+
+
 ###### ***version 0.2b***
 - Management Summary editable
 - Fix buttons in the test view

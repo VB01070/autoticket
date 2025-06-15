@@ -1,4 +1,4 @@
-# AutoTicket
+# GOST Admin Shortcut
 
 A Python application built with [Flet](https://flet.dev).
 

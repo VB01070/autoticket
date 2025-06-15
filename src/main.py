@@ -9,6 +9,7 @@ from views.cache_view import CacheView
 from views.report_view import ReportView
 from views.settings_view import SettingsView
 from views.test_view import TestView
+from views.about_view import AboutView
 
 
 def main(page: ft.Page):
@@ -46,7 +47,8 @@ def main(page: ft.Page):
         "/5": ("Cache", CacheView),
         "/6": ("Report", ReportView),
         "/7": ("Settings", SettingsView),
-        "/8": ("Restart", None),
+        "/8": ("About", AboutView),
+        "/9": ("Restart", None),
     }
 
     def route_change(e):
@@ -54,7 +56,7 @@ def main(page: ft.Page):
         route = page.route or "/"
 
         # full app “reboot”
-        if route == "/8":
+        if route == "/9":
             # clear view caches
             app_state.view_instances.clear()
             app_state.view_contents.clear()
