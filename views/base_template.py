@@ -26,8 +26,6 @@ class TemplatePage:
         )
         app_state.info_progress = self.info_progress
 
-        page.run_task(self._async_check_for_update)
-
     async def _async_check_for_update(self):
         # run your blocking check in a threadpool
         ahead = await asyncio.to_thread(check_for_update)
@@ -144,6 +142,8 @@ class TemplatePage:
                 )
             ]
         )
+
+        self.page.run_task(self._async_check_for_update)
 
         return ft.Column(
             expand=True,
