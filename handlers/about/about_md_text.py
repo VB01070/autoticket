@@ -21,7 +21,7 @@ Application build by the Global Offensive Security Team of Randstad.
 ### **BUGS**
 
 - [ ]  The Migrate page does not reload properly
-- [ ]  Some error when reset button is pushed
+- [x]  Some error when reset button is pushed. Caused by the Update icon that was not yet laod in the page when it was called.
 
 ### **Problem**
 
