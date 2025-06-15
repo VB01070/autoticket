@@ -8,16 +8,19 @@ class HomeView:
 
     def render(self):
 
+        first_row = ft.Row([
+            ft.Icon(name=ft.Icons.CAMPAIGN_OUTLINED, size=40, color=ft.Colors.GREEN),
+            ft.Text("What's New", size=38, weight=ft.FontWeight.BOLD),
+            ft.Text(f"version {str(self.app_state.app_version)}", size=12, weight=ft.FontWeight.BOLD, italic=True)
+        ])
+
         dummy_card = ft.Container(
             expand=True,
             padding=20,
             bgcolor=ft.Colors.SURFACE,
             content=ft.Column(
                 [
-                    ft.Row([
-                        ft.Icon(name=ft.Icons.CAMPAIGN_OUTLINED, size=40, color=ft.Colors.GREEN),
-                        ft.Text("What's New", size=38, weight=ft.FontWeight.BOLD),
-                    ]),
+                    first_row,
                     ft.Markdown(
                         markdown_text,
                         selectable=True,
