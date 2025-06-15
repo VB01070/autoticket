@@ -1,8 +1,12 @@
 import requests
+import urllib3
 from utils.caching import BASE_URL, get_headers
 import flet as ft
 from handlers.migration.render_migration_table import render_migration_table
 from utils.payload_builder import migration_payload_builder
+
+# Disable InsecureRequestWarning when verify=False is used
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 def fetch_vulns_per_migration(page, test_uuid):

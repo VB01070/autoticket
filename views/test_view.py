@@ -7,6 +7,7 @@ from utils.service_tag_references import (
     adversary_simulation_tag_uuid
 )
 from handlers.test.edit_details import edit_details
+from handlers.test.build_ai_management_summary_payload import build_ai_management_summary_payload
 
 
 class TestView:
@@ -119,6 +120,27 @@ class TestView:
         self.app_state.service_tag_dropdown = service_tag_dropdown
         self.app_state.page.service_tag_dropdown = service_tag_dropdown
 
+        generate_ai_summary_button = ft.FilledTonalButton(
+            content=ft.Container(
+                padding=ft.Padding(0, 0, 0, 0),
+                content=ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.SMART_TOY),
+                        ft.Text("Ai Assistance", size=12)
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=2
+                )
+            ),
+            on_click=lambda e: build_ai_management_summary_payload(e.page, e, test_uuid_text_field.value),
+            style=ft.ButtonStyle(
+                bgcolor={
+                    ft.ControlState.HOVERED: ft.Colors.GREEN_100,
+                    ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
+                }
+            )
+        )
+
         save_test_details_button = ft.FilledTonalButton(
             content=ft.Container(
                 padding=ft.Padding(0, 0, 0, 0),
@@ -158,7 +180,7 @@ class TestView:
                             ft.Row([test_uuid_text_field, load_test_uuid_button, servicenow_id_text_field], expand=True),
                             ft.Row([ connection_type_dropdown, service_tag_dropdown, testing_account_switch, account_role_text_field], expand=True),
                             management_summary_text_field,
-                            ft.Row([save_test_details_button, ft.Container(expand=True)])
+                            ft.Row([generate_ai_summary_button, save_test_details_button, ft.Container(expand=True)])
                         ]
                     ),
                 )
