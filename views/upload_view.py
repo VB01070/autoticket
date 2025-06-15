@@ -154,7 +154,8 @@ class UploadView:
                     ft.ControlState.DEFAULT: ft.Colors.INDIGO_50
                 }
             ),
-            disabled=not has_cache
+            # disabled=not has_cache
+            disabled=True
         )
 
         self.app_state.load_note_drive_button = load_note_drive_button

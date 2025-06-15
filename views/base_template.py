@@ -130,7 +130,8 @@ class TemplatePage:
                                         ft.ControlState.DEFAULT: ft.Colors.WHITE10
                                     }
                                 ),
-                                on_click=lambda e: open_project_folder(page=e.page, e=e)
+                                on_click=lambda e: open_project_folder(page=e.page, e=e),
+                                disabled=True
                             ),
                             project_folder_temp_text,
                             cache_state_temp_text,

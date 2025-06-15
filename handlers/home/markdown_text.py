@@ -1,6 +1,11 @@
 markdown_text = """
 
 
+###### ***version 0.2d***
+- Disabled 'Load Note Drive' button
+- Disabled 'Select Project Folder' button
+
+
 ###### ***version 0.2c***
 - Add About view
 
