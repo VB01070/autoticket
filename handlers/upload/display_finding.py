@@ -15,7 +15,7 @@ def display_finding(page):
         f"Note\n"
         f"{finding['note']}"
     )
-
+    cvss_info = page.app_state.cvss_data[idx]
     #  AI suggestions
     # Grab the list (or None) and the current slot
     ai_suggestions = getattr(page.app_state, "ai_suggestions", None)
@@ -46,8 +46,14 @@ def display_finding(page):
         text = "AI suggestions not generated yet."
 
     # Push into both fields
-    page.app_state.ai_content.value = text
+    # page.app_state.ai_content.value = text
     page.app_state.ai_content_editable.value = text
+
+    # update cvss vector and severity
+    page.app_state.cvss_text.value = cvss_info.get("vector", "")
+    page.app_state.severity_text.value = cvss_info.get("severity", "")
+    page.app_state.cvss_text.update()
+    page.app_state.severity_text.update()
 
     # Screenshots carousel
     screenshots = finding.get("screenshots", [])

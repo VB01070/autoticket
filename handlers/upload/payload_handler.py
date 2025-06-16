@@ -15,6 +15,7 @@ def view_payload(page, e):
     # ai_data = app.latest_ai_data
     ai_raw = page.app_state.ai_suggestions[page.app_state.current_finding_index]
     ai_edit = page.app_state.ai_suggestions_editable[page.app_state.current_finding_index]
+    cvss_data = page.app_state.cvss_data[page.app_state.current_finding_index]
 
     # If edited version is a non-empty string (i.e., user edited), parse it as structured AI data
     if ai_edit and isinstance(ai_edit, str):
@@ -35,7 +36,7 @@ def view_payload(page, e):
         "test": page.app_state.test_uuid,
     }
     print(f"[DEBUG] UUIDs: {uuids}")
-    payload = build_payload(finding, ai_data, uuids, vuln_type_name=None)
+    payload = build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name=None)
     print("[DEBUG] Payload built")
     # print(f"[DEBUG] {payload}")
     # Convert to pretty JSON

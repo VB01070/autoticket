@@ -29,5 +29,6 @@ class AppState:
         self.uploaded_vulns = {}
         self.folder_stack = []
         self.current_items = []
+        self.cvss_data = []
         self.fetched_migration_vulns = None
-        self.app_version = "0.2d"
+        self.app_version = "0.3a"

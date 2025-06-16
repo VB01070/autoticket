@@ -10,6 +10,8 @@ from handlers.upload.payload_handler import view_payload
 from handlers.upload.upload_handler import upload_vulnerability
 from handlers.upload.display_finding import previous_vuln, next_vuln
 from handlers.upload.document_handler import load_local_document, on_browse
+from handlers.upload.cvss_handler import open_cvss_calculator_dialog
+
 
 
 class UploadView:
@@ -488,23 +490,7 @@ class UploadView:
 
         # == CONTROLS ROW END ==
 
-        # == AI ROW START ==
-        ai_content = ft.TextField(
-            value="AI Document content will appear here",
-            multiline=True,
-            read_only=True,
-            min_lines=11,
-            max_lines=11,
-            border_radius=10,
-            filled=True,
-            expand=True,
-            text_align=ft.TextAlign.LEFT,
-            text_style=ft.TextStyle(size=12),
-            bgcolor=ft.Colors.SURFACE,
-        )
-
-        self.app_state.ai_content = ai_content
-        self.app_state.page.ai_content = ai_content
+        # == AI-CVSS  ROW START ==
 
         ai_content_editable = ft.TextField(
             value="AI Document content will appear here - EDITABLE",
@@ -523,24 +509,99 @@ class UploadView:
         self.app_state.ai_content_editable = ai_content_editable
         self.app_state.page.ai_content_editable = ai_content_editable
 
+        cvss_title_text = ft.Text("CVSS4/Severity", theme_style=ft.TextThemeStyle.HEADLINE_SMALL)
+
+        cvss_calculator_button = ft.FilledTonalButton(
+            content=ft.Container(
+                padding=ft.Padding(0, 0, 0, 0),
+                content=ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.CALCULATE_OUTLINED),
+                        ft.Text("Open CVSS Calculator", size=12),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=2
+                )
+            ),
+            style=ft.ButtonStyle(
+                bgcolor={
+                    ft.ControlState.HOVERED: ft.Colors.GREEN_100,
+                    ft.ControlState.DEFAULT: ft.Colors.WHITE10
+                }
+            ),
+            on_click=lambda e: open_cvss_calculator_dialog(page=e.page, e=e),
+            disabled=False
+        )
+
+        cvss_text = ft.Text("", size=10, italic=True, selectable=True)
+
+        self.app_state.cvss_text = cvss_text
+        self.app_state.page.cvss_text = cvss_text
+
+        severity_text = ft.Text("", size=10, italic=True)
+
+        self.app_state.severity_text = severity_text
+        self.app_state.page.severity_text = severity_text
+
+        cvss_dialog  = ft.AlertDialog(
+            modal=True,
+            title=ft.Text("CVSS v4.0 Base Score Calculator"),
+        )
+
+        self.app_state.cvss_dialog  = cvss_dialog
+        self.app_state.page.cvss_dialog  = cvss_dialog
+
         # build AI Row
 
         ai_row = ft.Row(
             controls=[
                 ft.Column(
-                    expand=1,
+                    expand=3,
                     spacing=5,
-                    controls=[ai_content]
+                    scroll=ft.ScrollMode.AUTO,
+                    controls=[ai_content_editable]
                 ),
                 ft.Column(
                     expand=1,
                     spacing=5,
-                    controls=[ai_content_editable]
+                    alignment=ft.alignment.top_center,
+                    controls=[
+                        ft.Container(
+                            padding=10,
+                            expand=1,
+                            border_radius=10,
+                            border=ft.border.all(1, ft.Colors.BLACK38),
+                            content=ft.Column(
+                                spacing=10,
+                                alignment=ft.MainAxisAlignment.START,
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                controls=[
+                                    cvss_title_text,
+                                    ft.Divider(),
+                                    cvss_calculator_button,
+                                    ft.Row(
+                                        controls=[
+                                            ft.Text("CVSS: ", size=10, weight=ft.FontWeight.BOLD),
+                                            cvss_text
+                                        ]
+                                    ),
+                                    ft.Row(
+                                        controls=[
+                                            ft.Text("Severity: ", size=10, weight=ft.FontWeight.BOLD),
+                                            severity_text
+                                        ]
+                                    )
+                                ]
+                            )
+                        )
+                    ]
                 )
             ]
         )
 
         # == AI ROW END ==
+
+
 
         dummy_card = ft.Container(
             bgcolor=ft.Colors.INDIGO_50,
@@ -558,5 +619,6 @@ class UploadView:
             populate_vulns_dropdown(self.app_state)
 
         return ft.Column([
-            dummy_card
+            dummy_card,
+            cvss_dialog
         ])

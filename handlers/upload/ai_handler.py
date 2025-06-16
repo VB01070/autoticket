@@ -7,7 +7,7 @@ from utils.assistant import generate_ai_suggestion
 
 
 def ai_assistance(page, e):
-    page.app_state.ai_content.value = "Generating AI suggestions for all findings..."
+    # page.app_state.ai_content.value = "Generating AI suggestions for all findings..."
     page.app_state.ai_content_editable.value = "Generating AI suggestions for all findings..."
     page.app_state.info_progress.visible = True
     page.update()

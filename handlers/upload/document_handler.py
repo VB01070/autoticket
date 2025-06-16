@@ -27,6 +27,10 @@ def load_local_document(page, e):
         file_path = event.files[0].path
         try:
             page.app_state.findings, page.app_state.metadata = parse_findings(file_path)
+            page.app_state.cvss_data = [
+                {"vector": "", "severity": ""}
+                for _ in page.app_state.findings
+            ]
             if not page.app_state.findings:
                 page.snack_bar.content = ft.Row(
                     controls=[

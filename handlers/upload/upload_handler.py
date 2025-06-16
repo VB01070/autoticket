@@ -13,6 +13,7 @@ def upload_all_vulnerabilities(page, e):
     finding = page.app_state.findings[page.app_state.current_finding_index]
     ai_raw = page.app_state.ai_suggestions[page.app_state.current_finding_index]
     ai_edit = page.app_state.ai_suggestions_editable[page.app_state.current_finding_index]
+    cvss_data = page.app_state.cvss_data[page.app_state.current_finding_index]
 
     if ai_edit and isinstance(ai_edit, str):
         try:
@@ -29,7 +30,7 @@ def upload_all_vulnerabilities(page, e):
         "test": page.app_state.test_uuid,
     }
 
-    payload = build_payload(finding, ai_data, uuids, vuln_type_name=None)
+    payload = build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name=None)
     x_api_key = get_credential("DashboardAPIKey")
     org_uuid = page.app_state.org_uuid
     url = f"{BASE_URL}/api/v3/provider/vulnerabilities/{org_uuid}/create"
@@ -60,9 +61,9 @@ def upload_all_vulnerabilities(page, e):
         page.update()
 
 
-async def _upload_single_vuln(page, idx, finding, ai_data, uuids, url, headers):
+async def _upload_single_vuln(page, idx, finding, ai_data, cvss_data, uuids, url, headers):
     try:
-        payload = build_payload(finding, ai_data, uuids, vuln_type_name=None)
+        payload = build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name=None)
         response = await asyncio.to_thread(requests.post, url, headers=headers, json=payload)
 
         if response.status_code != 200:
@@ -98,6 +99,7 @@ async def _do_upload_all_vulns(page):
     for idx, finding in enumerate(page.app_state.findings):
         ai_raw = page.app_state.ai_suggestions[idx]
         ai_edit = page.app_state.ai_suggestions_editable[idx]
+        cvss_data = page.app_state.cvss_data[idx]
 
         # Prefer editable if valid
         if ai_edit and isinstance(ai_edit, str):
@@ -115,7 +117,7 @@ async def _do_upload_all_vulns(page):
             "test": page.app_state.test_uuid,
         }
 
-        tasks.append(_upload_single_vuln(page, idx, finding, ai_data, uuids, url, headers))
+        tasks.append(_upload_single_vuln(page, idx, finding, ai_data, cvss_data, uuids, url, headers))
 
     results = await asyncio.gather(*tasks)
     all_success = all(results)

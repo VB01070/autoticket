@@ -16,7 +16,9 @@ def severity_to_cvss(sev: str) -> str:
     }.get(sev, "CVSS:3.0/AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:N/A:N")
 
 
-def build_payload(finding, ai_data, uuids, vuln_type_name):
+def build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name):
+    print(f"FINDINGS: {type(ai_data)} - {len(ai_data)}")
+    print(f"FINDINGS: {ai_data}")
     details_html = ""  # clean details, every bloody time
 
     details_html += f"""
@@ -82,11 +84,11 @@ def build_payload(finding, ai_data, uuids, vuln_type_name):
         "context": uuids["context"],
         "test": uuids["test"],
         "all_tests": False,
-        "severity": finding["severity"].strip().lower(),
+        "severity": cvss_data.get("severity", finding["severity"]).strip().lower(),
         "description": finding["title"].strip(),
         "details": details_html.lstrip(),
         "ready_to_publish": True,
-        "cvss_vector": severity_to_cvss(finding["severity"]),
+        "cvss_vector": cvss_data.get("vector", ""),
         "authenticated": False,
         "language": "",
         "template": "",
@@ -114,7 +116,7 @@ def migration_payload_builder(page, migration_vulns):
             "description": f"{item['description']} - {item['organisation_name']}",
             "details": item["details"],
             "ready_to_publish": True,
-            "cvss_vector": severity_to_cvss(item["severity"]),
+            "cvss_vector": severity_to_cvss(item["severity"]),  # is it really necessary?
             "authenticated": False,
             "language": "",
             "template": "",

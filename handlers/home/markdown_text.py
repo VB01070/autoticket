@@ -1,6 +1,10 @@
 markdown_text = """
 
 
+###### ***version 0.3a***
+- Add CVSS 4 Calculator for vector and severity.
+
+
 ###### ***version 0.2d***
 - Disabled 'Load Note Drive' button
 - Disabled 'Select Project Folder' button
