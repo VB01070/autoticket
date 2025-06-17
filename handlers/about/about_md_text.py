@@ -12,18 +12,17 @@ Application build by the Global Offensive Security Team of Randstad.
 
 ### **To Do**
 
-- [x]  Ai generate Management summary (from where to load the vulnerabilities? it would be easy probably to fetch them directly from the dashboard.)
-- [ ]  Publish migrate vulnerability, delete the migrated vulnerability from the market
-- [ ]  List of the most used Asset form GIS (need assistance from the team)
-- [ ]  Move presentation and report to drive
-- [x] CVSS 4.0 for the vulnerabilities. this should reflect the severity
+- [ ] Publish migrate vulnerability
+- [ ] List of the most used Asset form GIS (need assistance from the team)
+- [ ] Move presentation and report to drive
 - [ ] Improve error handling client side
+- [ ] Map of the vulnerability type/GIS asset
+- [ ] Improve the searchable Dropdown for vulnerability types
 
 
 ### **BUGS**
 
-- [ ]  The Migrate page does not reload properly
-- [x]  Some error when reset button is pushed. Caused by the Update icon that was not yet load in the page when it was called.
+- 
 
 ### **Problem**
 

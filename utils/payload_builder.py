@@ -1,8 +1,12 @@
-# import imghdr
+from time import sleep
 import filetype
 import base64
 import flet as ft
 from handlers.migration.migrate import migrate_vuln
+from handlers.manage.delete_vuln import delete_vuln
+
+
+GLOBAL_REMEDIATION_OWNER_TAG = "3507ea67-dc17-49ed-aea4-30abc7376f3c"
 
 
 def severity_to_cvss(sev: str) -> str:
@@ -97,6 +101,7 @@ def build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name):
 
 
 def migration_payload_builder(page, migration_vulns):
+    original_vuln = page.app_state.migration_selected_uuids
     if not migration_vulns:
         page.snack_bar.content = ft.Text(f"No vulnerabilities selected")
         page.snack_bar.bgcolor = ft.Colors.RED_400
@@ -113,16 +118,25 @@ def migration_payload_builder(page, migration_vulns):
             "context": item["context_uuid"],
             "all_tests": False,
             "severity": item["severity"].strip().lower(),
-            "description": f"{item['description']} - {item['organisation_name']}",
+            "description": f"{item['description']} - {item['organisation_name'].upper()}",
             "details": item["details"],
             "ready_to_publish": True,
-            "cvss_vector": severity_to_cvss(item["severity"]),  # is it really necessary?
+            "cvss_vector": (item["cvss_vector"]),
             "authenticated": False,
             "language": "",
             "template": "",
-            "tags": [""]
+            "tags": [GLOBAL_REMEDIATION_OWNER_TAG]
         }
 
         final_payloads.append(vulns_payload)
 
     migrate_vuln(page, final_payloads)
+    sleep(5)
+    for vuln in original_vuln:
+        delete_vuln(page, vuln)
+    from handlers.migration.fetch_vulns import fetch_vulns_per_migration
+    fetch_vulns_per_migration(page, page.app_state.migrate_test_uuid_text_field.value)
+    page.app_state.info_progress.visible=False
+    page.update()
+
+

@@ -1,6 +1,14 @@
 markdown_text = """
 
 
+###### ***version 0.4a***
+- Make the vulnerability types dropdown searchable
+- Add market to the vulnerability description (title) when a item is migrated to GIS
+- Add the tag 'GLOBAL REMEDIATION OWNER' to all migrated vulnerabilities
+- Delete the migrated vulnerability from the market
+- Fix bug Migration reload page
+
+
 ###### ***version 0.3a***
 - Add CVSS 4 Calculator for vector and severity.
 

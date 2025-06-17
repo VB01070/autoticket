@@ -63,7 +63,7 @@ def migration_fetcher(test_uuid):
 def build_migration_entries(page):
     combined_entries = []
     seen_uuids = set()
-
+    page.app_state.info_progress.visible=True
     for vuln in page.app_state.fetched_migration_vulns:
         uuid = vuln["uuid"]
         if uuid not in page.app_state.migration_selected_uuids or uuid in seen_uuids:
@@ -101,6 +101,5 @@ def build_migration_entries(page):
 
         combined_entries.append(entry)
         seen_uuids.add(uuid)
-        print(seen_uuids)
 
     migration_payload_builder(page, combined_entries)

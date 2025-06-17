@@ -3,11 +3,8 @@ from utils.caching import BASE_URL, get_headers
 import requests
 
 
-def delete_vuln(page, e):
-    uuid_field = page.app_state.vuln_uuid_text_field
-    vuln_uuid = uuid_field.value.strip()
-    print(vuln_uuid)
-    if not vuln_uuid:
+def delete_vuln(page, uuid):
+    if not uuid:
         page.snack_bar.content = ft.Text("Vulnerability UUID is missing!")
         page.snack_bar.bgcolor = ft.Colors.RED_400
         page.snack_bar.open = True
@@ -17,11 +14,11 @@ def delete_vuln(page, e):
     headers = get_headers()
     url = f"{BASE_URL}/api/v3/provider/vulnerabilities/bulk-action/delete"
     body = {
-        "vulnerabilities": [vuln_uuid]
+        "vulnerabilities": [uuid]
     }
 
     body_check = {
-        "uuid": [vuln_uuid]
+        "uuid": [uuid]
     }
 
     try:
@@ -43,8 +40,8 @@ def delete_vuln(page, e):
                     page.snack_bar.content = ft.Text("The vulnerability has been deleted.", color=ft.Colors.WHITE)
                     page.snack_bar.bgcolor = ft.Colors.GREEN_400
                     page.snack_bar.open = True
-                    uuid_field.value = ""
-                    uuid_field.update()
+                    # uuid_field.value = ""
+                    # uuid_field.update()
                 else:
                     print(response.text)
                     page.snack_bar.content = ft.Text(f"Delete failed: {response.status_code}")
