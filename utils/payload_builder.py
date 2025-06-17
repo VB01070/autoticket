@@ -2,8 +2,7 @@ from time import sleep
 import filetype
 import base64
 import flet as ft
-from handlers.migration.migrate import migrate_vuln
-from handlers.manage.delete_vuln import delete_vuln
+from handlers.migration.holding_process import run_all_process
 
 
 GLOBAL_REMEDIATION_OWNER_TAG = "3507ea67-dc17-49ed-aea4-30abc7376f3c"
@@ -101,7 +100,6 @@ def build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name):
 
 
 def migration_payload_builder(page, migration_vulns):
-    original_vuln = page.app_state.migration_selected_uuids
     if not migration_vulns:
         page.snack_bar.content = ft.Text(f"No vulnerabilities selected")
         page.snack_bar.bgcolor = ft.Colors.RED_400
@@ -130,13 +128,7 @@ def migration_payload_builder(page, migration_vulns):
 
         final_payloads.append(vulns_payload)
 
-    migrate_vuln(page, final_payloads)
-    sleep(5)
-    for vuln in original_vuln:
-        delete_vuln(page, vuln)
-    from handlers.migration.fetch_vulns import fetch_vulns_per_migration
-    fetch_vulns_per_migration(page, page.app_state.migrate_test_uuid_text_field.value)
-    page.app_state.info_progress.visible=False
-    page.update()
+
+    run_all_process(page, final_payloads)
 
 

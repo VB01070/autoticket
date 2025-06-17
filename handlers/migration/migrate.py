@@ -3,6 +3,7 @@ import flet as ft
 import requests
 import json
 import re
+from handlers.migration.publish_migrated_vulns import publish_migrated_vulns
 
 
 GIS_UUID = "135a57f3-2fef-4980-b182-93e263890b19"
@@ -52,3 +53,4 @@ def migrate_vuln(page, payloads):
             page.update()
             print(ex)
 
+    publish_migrated_vulns(page, new_vulns_uuid)

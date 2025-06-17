@@ -31,4 +31,4 @@ class AppState:
         self.current_items = []
         self.cvss_data = []
         self.fetched_migration_vulns = None
-        self.app_version = "0.4a"
+        self.app_version = "0.4b"

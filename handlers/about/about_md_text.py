@@ -12,7 +12,7 @@ Application build by the Global Offensive Security Team of Randstad.
 
 ### **To Do**
 
-- [ ] Publish migrate vulnerability
+- [ ] 
 - [ ] List of the most used Asset form GIS (need assistance from the team)
 - [ ] Move presentation and report to drive
 - [ ] Improve error handling client side

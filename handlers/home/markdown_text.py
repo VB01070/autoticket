@@ -1,5 +1,9 @@
 markdown_text = """
 
+###### ***version 0.4b***
+- Publish migrate vulnerability
+- Improve Delete original migrated vulnerability flow
+
 
 ###### ***version 0.4a***
 - Make the vulnerability types dropdown searchable

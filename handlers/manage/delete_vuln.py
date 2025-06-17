@@ -4,13 +4,6 @@ import requests
 
 
 def delete_vuln(page, uuid):
-    if not uuid:
-        page.snack_bar.content = ft.Text("Vulnerability UUID is missing!")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
-        page.snack_bar.open = True
-        page.update()
-        return
-
     headers = get_headers()
     url = f"{BASE_URL}/api/v3/provider/vulnerabilities/bulk-action/delete"
     body = {
@@ -26,44 +19,35 @@ def delete_vuln(page, uuid):
         items = check_response.json().get("items", [])
 
         if not items:
-            page.snack_bar.content = ft.Text("No such vulnerability found!")
-            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
-            page.snack_bar.open = True
+            print("No vulnerabilities found")
             page.update()
-            return
+            return False
 
         if not items[0].get("published_at"):
             try:
                 response = requests.delete(url, json=body, headers=headers, verify=False)
                 if response.status_code == 200:
                     print(response.text)
-                    page.snack_bar.content = ft.Text("The vulnerability has been deleted.", color=ft.Colors.WHITE)
-                    page.snack_bar.bgcolor = ft.Colors.GREEN_400
-                    page.snack_bar.open = True
+                    return True
+
                     # uuid_field.value = ""
                     # uuid_field.update()
                 else:
                     print(response.text)
-                    page.snack_bar.content = ft.Text(f"Delete failed: {response.status_code}")
-                    page.snack_bar.bgcolor = ft.Colors.ORANGE_400
-                    page.snack_bar.open = True
+                    return False
             except Exception as exc:
                 print(exc)
-                page.snack_bar.content = ft.Text(f"Error: {exc}")
-                page.snack_bar.bgcolor = ft.Colors.RED_400
-                page.snack_bar.open = True
+                return False
         else:
             page.snack_bar.content = ft.Text("Vulnerability is already published. Impossible to Delete.")
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
-            return
+            return False
 
     except Exception as ex:
         print(ex)
-        page.snack_bar.content = ft.Text(f"Error: {ex}")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
-        page.snack_bar.open = True
+        return False
 
     page.update()
 
