@@ -11,8 +11,13 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def fetch_vulns_per_migration(page, test_uuid):
     if not test_uuid:
-        page.snack_bar.content = ft.Text(f"Test UUID is missing!")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("Test UUID is missing!", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return
@@ -23,8 +28,13 @@ def fetch_vulns_per_migration(page, test_uuid):
 
     except Exception as e:
         print(f"Error fetching vulns: {e}")
-        page.snack_bar.content = ft.Text(f"Error fetching vulnerabilities")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Error fetching vulns: {e}", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return

@@ -1,6 +1,5 @@
 import flet as ft
 from utils.load_current_test_uuid import load_current_test_uuid
-from handlers.manage.edit_test import edit_test_details
 from handlers.manage.fetch_vulns import fetch_vulns_by_test
 from handlers.manage.publish_vuln import publish_selected_vulns, publish_vulnerability
 from handlers.manage.delete_vuln import delete_vuln, delete_selected_vulns
@@ -179,22 +178,6 @@ class ManageView:
             expand=True,
             spacing=20,
             controls=[
-                # ft.Container(
-                #     bgcolor=ft.Colors.INDIGO_50,
-                #     expand=True,
-                #     padding=10,
-                #     content=ft.Column(
-                #         expand=True,
-                #         horizontal_alignment=ft.CrossAxisAlignment.START,
-                #         spacing=10,
-                #         controls=[
-                #             modify_vuln_text,
-                #             ft.Divider(),
-                #             vuln_uuid_text_field,
-                #             ft.Row([publish_vuln_button, delete_vuln_button, ft.Container(expand=True)]),
-                #         ]
-                #     )
-                # ),
                 ft.Container(
                     bgcolor=ft.Colors.INDIGO_50,
                     expand=True,

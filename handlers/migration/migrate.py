@@ -12,8 +12,13 @@ GIS_UUID = "135a57f3-2fef-4980-b182-93e263890b19"
 def migrate_vuln(page, payloads):
     new_vulns_uuid = []
     if not payloads:
-        page.snack_bar.content = ft.Text(f"No Vulnerabilities has been selected.")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("No Vulnerabilities has been selected.", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return
@@ -25,7 +30,12 @@ def migrate_vuln(page, payloads):
         try:
             response = requests.post(url, headers=headers, json=item)
             if response.status_code == 200:
-                page.snack_bar.content = ft.Text(f"Vulnerability successfully submitted!")
+                page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text("Vulnerability successfully submitted!", color=ft.Colors.BLACK87)
+                    ]
+                )
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
                 page.snack_bar.open = True
                 page.update()
@@ -41,14 +51,24 @@ def migrate_vuln(page, payloads):
                 else:
                     print("No success in response text")
             else:
-                page.snack_bar.content = ft.Text(f"Upload Failed! Status: {response.status_code}")
-                page.snack_bar.bgcolor = ft.Colors.RED_400
+                page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text(f"Upload Failed! Status: {response.status_code}", color=ft.Colors.BLACK87)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.ORANGE_400
                 page.snack_bar.open = True
                 page.update()
                 print(f"{response.status_code}: {response.text}")
         except Exception as ex:
-            page.snack_bar.content = ft.Text(f"Error! Request failed: {ex}")
-            page.snack_bar.bgcolor = ft.Colors.RED_400
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Upload Failed! Error! Request failed: {ex}", color=ft.Colors.BLACK87)
+                ]
+            )
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
             print(ex)

@@ -10,8 +10,13 @@ def run_all_process(page, final_payloads):
     original_vulns = page.app_state.migration_selected_uuids
 
     if not original_vulns:
-        page.snack_bar.content = ft.Text("Vulnerability UUID is missing!")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("Vulnerability UUID is missing!", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return
@@ -23,11 +28,22 @@ def run_all_process(page, final_payloads):
     try:
         for uuid in original_vulns:
             delete_vuln(page, uuid)
-        page.snack_bar.content = ft.Text("The vulnerability has been deleted.", color=ft.Colors.WHITE)
+
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("The vulnerability has been deleted.", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
     except Exception as err:
         print(err)
-        page.snack_bar.content = ft.Text("Problem deleting original vulnerability !")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Problem deleting original vulnerability: {err}", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.ORANGE_400
 
     from handlers.migration.fetch_vulns import fetch_vulns_per_migration

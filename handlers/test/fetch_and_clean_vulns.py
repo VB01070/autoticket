@@ -10,7 +10,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def fetch_and_clean_vulns(page, test_uuid):
     if not test_uuid:
-        page.snack_bar.content = ft.Text(f"Test UUID is missing!")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("Test UUID is missing!", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()

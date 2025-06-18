@@ -60,11 +60,11 @@ async def _do_ai_assistance_all(page):
     page.app_state.latest_ai_data = page.app_state.ai_suggestions[page.app_state.current_finding_index]
     page.snack_bar.content = ft.Row(
         controls=[
-            ft.Icon(name=ft.Icons.SMART_TOY, color=ft.Colors.WHITE),
+            ft.Icon(name=ft.Icons.SMART_TOY, color=ft.Colors.BLACK87),
             ft.Text("All findings analyzed by AI Assistant!", size=14)
         ]
     )
-    page.snack_bar.bgcolor = ft.Colors.GREEN_300
+    page.snack_bar.bgcolor = ft.Colors.GREEN_400
     page.snack_bar.open = True
     page.app_state.info_progress.visible = False
     page.app_state.edit_ai_content_button.disabled = False

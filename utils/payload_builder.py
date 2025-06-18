@@ -101,8 +101,13 @@ def build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name):
 
 def migration_payload_builder(page, migration_vulns):
     if not migration_vulns:
-        page.snack_bar.content = ft.Text(f"No vulnerabilities selected")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            controls=[
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("No vulnerabilities selected", size=14, color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return

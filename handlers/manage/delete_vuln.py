@@ -39,7 +39,12 @@ def delete_vuln(page, uuid):
                 print(exc)
                 return False
         else:
-            page.snack_bar.content = ft.Text("Vulnerability is already published. Impossible to Delete.")
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("Vulnerability is already published. Impossible to Delete.", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
@@ -55,8 +60,13 @@ def delete_vuln(page, uuid):
 def delete_selected_vulns(page, e):
     selected_uuids = list(page.app_state.selected_vuln_uuids)
     if not page.app_state.selected_vuln_uuids:
-        page.snack_bar.content = ft.Text("No vulnerabilities selected.", color=ft.Colors.WHITE)
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.QUESTION_MARK_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("No vulnerabilities selected.", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return
@@ -71,7 +81,12 @@ def delete_selected_vulns(page, e):
         response = requests.delete(url, json=body, headers=headers, verify=False)
         if response.status_code == 200:
             print(response.text)
-            page.snack_bar.content = ft.Text("The vulnerabilities have been deleted.", color=ft.Colors.WHITE)
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("The vulnerabilities have been deleted.", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.GREEN_400
             page.snack_bar.open = True
 
@@ -81,13 +96,23 @@ def delete_selected_vulns(page, e):
             render_vuln_table(page, vuln_data)
         else:
             print(response.text)
-            page.snack_bar.content = ft.Text(f"Delete failed: {response.status_code}")
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Delete failed: {response.status_code}", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
 
     except Exception as ex:
         print(ex)
-        page.snack_bar.content = ft.Text(f"Error: {ex}")
+        page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Delete failed. Error: {ex}", color=ft.Colors.BLACK87)
+                ]
+            )
         page.snack_bar.bgcolor = ft.Colors.RED_400
         page.snack_bar.open = True
 

@@ -6,8 +6,13 @@ import requests
 def publish_selected_vulns(page, e):
     selected_uuids = list(page.app_state.selected_vuln_uuids)
     if not page.app_state.selected_vuln_uuids:
-        page.snack_bar.content = ft.Text("No vulnerabilities selected.", color=ft.Colors.WHITE)
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("No vulnerabilities selected.", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
         return
@@ -23,7 +28,12 @@ def publish_selected_vulns(page, e):
         response = requests.post(url, json=body, headers=headers, verify=False)
         if response.status_code == 200:
             print(response.text)
-            page.snack_bar.content = ft.Text("The vulnerabilities selected have been published.", color=ft.Colors.WHITE)
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("The vulnerabilities selected have been published.", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.GREEN_400
             page.snack_bar.open = True
 
@@ -33,13 +43,23 @@ def publish_selected_vulns(page, e):
             render_vuln_table(page, vuln_data)
         else:
             print(response.text)
-            page.snack_bar.content = ft.Text(f"Publish failed: {response.status_code}")
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Publish failed: {response.status_code}", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
 
     except Exception as ex:
         print(ex)
-        page.snack_bar.content = ft.Text(f"Error: {ex}")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Publish failed. Error: {ex}", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.RED_400
         page.snack_bar.open = True
 
@@ -49,7 +69,12 @@ def publish_vulnerability(page, e):
     vuln_uuid = uuid_field.value.strip()
     print(vuln_uuid)
     if not vuln_uuid:
-        page.snack_bar.content = ft.Text("Vulnerability UUID is missing!")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("Vulnerability UUID is missing!", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.RED_400
         page.snack_bar.open = True
         page.update()
@@ -65,19 +90,34 @@ def publish_vulnerability(page, e):
         response = requests.post(url, json=body, headers=headers, verify=False)
         if response.status_code == 200:
             print(response.text)
-            page.snack_bar.content = ft.Text("The Vulnerability has been published.", color=ft.Colors.WHITE)
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("The Vulnerability has been published.", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.GREEN_400
             page.snack_bar.open = True
             uuid_field.value = ""
             uuid_field.update()
         else:
             print(response.text)
-            page.snack_bar.content = ft.Text(f"Publish failed: {response.status_code}")
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Publish failed: {response.status_code}", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
 
     except Exception as ex:
-        page.snack_bar.content = ft.Text(f"Error: {ex}")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Publish failed. Error: {ex}", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.RED_400
         page.snack_bar.open = True
 

@@ -42,7 +42,13 @@ def generate_pdf(page):
     html_file_path = page.html_file_path  # use the path saved in app
 
     if not os.path.exists(html_file_path):
-        page.snack_bar.content = ft.Text(f"HTML file not found: {html_file_path}")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"HTML file not found: '{html_file_path}'",
+                        color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
@@ -62,13 +68,25 @@ def generate_pdf(page):
         print("start generating")
         html.write_pdf(output_path)
         print(f"finished generating: {output_path}")
-        page.snack_bar.content = ft.Text(f"PDF saved: {output_path}")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"PDF saved: '{output_path}'",
+                        color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
         page.snack_bar.open = True
         page.update()
         return output_path
     except Exception as e:
-        page.snack_bar.content = ft.Text(f"PDF generation failed: {e}")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"PDF generation failed: {e}'",
+                        color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()

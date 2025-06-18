@@ -43,20 +43,36 @@ def upload_all_vulnerabilities(page, e):
         response = requests.post(url, headers=headers, json=payload)
         if response.status_code == 200:
             page.app_state.info_progress.visible = False
-            page.snack_bar.content = ft.Text("Vulnerability successfully submitted!")
+            page.snack_bar.content = ft.Row(
+                controls=[
+                    ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("Vulnerability successfully submitted!", size=14)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.GREEN_400
             page.snack_bar.open = True
             page.update()
         else:
             page.app_state.info_progress.visible = False
-            page.snack_bar.content = ft.Text(f"Upload Failed! Status: {response.status_code}: {response.text}")
-            page.snack_bar.bgcolor = ft.Colors.RED_400
+            page.snack_bar.content = ft.Row(
+                controls=[
+                    ft.Icon(name=ft.Icons.ERROR_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Upload Failed! Status: {response.status_code}: {response.text}", size=14)
+                ]
+            )
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
     except Exception as ex:
         page.app_state.info_progress.visible = False
+        page.snack_bar.content = ft.Row(
+            controls=[
+                ft.Icon(name=ft.Icons.ERROR_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Error! Request failed: {ex}", size=14)
+            ]
+        )
         page.snack_bar.content = ft.Text(f"Error! Request failed: {ex}")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
 
@@ -78,8 +94,13 @@ async def _upload_single_vuln(page, idx, finding, ai_data, cvss_data, uuids, url
 
 def upload_vulnerability(page, e):
     page.app_state.info_progress.visible = True
-    page.snack_bar.content = ft.Text("Uploading all vulnerabilities...")
-    page.snack_bar.bgcolor = ft.Colors.BLUE_200
+    page.snack_bar.content = ft.Row(
+        controls=[
+            ft.Icon(name=ft.Icons.UPLOAD_OUTLINED, color=ft.Colors.BLACK87),
+            ft.Text("Uploading all vulnerabilities...", size=14)
+        ]
+    )
+    page.snack_bar.bgcolor = ft.Colors.BLUE_400
     page.snack_bar.open = True
     page.update()
 
@@ -123,9 +144,12 @@ async def _do_upload_all_vulns(page):
     all_success = all(results)
 
     page.app_state.info_progress.visible = False
-    page.snack_bar.content = ft.Text(
-        "All vulnerabilities uploaded!" if all_success else "Some vulnerabilities failed to upload."
+    page.snack_bar.content = ft.Row(
+        controls=[
+            ft.Icon(name=ft.Icons.UPLOAD_OUTLINED, color=ft.Colors.BLACK87),
+            ft.Text("All vulnerabilities uploaded!" if all_success else "Some vulnerabilities failed to upload.", size=14)
+        ]
     )
-    page.snack_bar.bgcolor = ft.Colors.GREEN_400 if all_success else ft.Colors.RED_400
+    page.snack_bar.bgcolor = ft.Colors.GREEN_400 if all_success else ft.Colors.ORANGE_400
     page.snack_bar.open = True
     page.update()

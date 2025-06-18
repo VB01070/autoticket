@@ -31,36 +31,36 @@ async def _do_initial_fetch(page):
         page.app_state.cache_check_icon.color = ft.Colors.GREEN_ACCENT
         page.snack_bar.content = ft.Row(
             controls=[
-                ft.Icon(name=ft.Icons.DONE_OUTLINE, color=ft.Colors.WHITE),
-                ft.Text("Cache created successfully!", size=14)
+                ft.Icon(name=ft.Icons.DONE_OUTLINE, color=ft.Colors.BLACK87),
+                ft.Text("Cache created successfully!", size=14, color=ft.Colors.BLACK87)
             ]
         )
-        page.snack_bar.bgcolor = ft.Colors.GREEN_300
+        page.snack_bar.bgcolor = ft.Colors.GREEN_400
     except ValueError as e:
         if "API key expired or invalid" in str(e):
             page.snack_bar.content = ft.Row(
                 controls=[
-                    ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
-                    ft.Text(f"{e}", size=14)
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"API key expired or invalid: {e}", size=14, color=ft.Colors.BLACK87)
                 ]
             )
-            page.snack_bar.bgcolor = ft.Colors.RED_300
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         else:
             page.snack_bar.content = ft.Row(
                 controls=[
-                    ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
-                    ft.Text("API key not Founded..", size=14)
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("API key not Founded..", size=14, color=ft.Colors.BLACK87)
                 ]
             )
-            page.snack_bar.bgcolor = ft.Colors.RED_300
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     except Exception as ex:
         page.snack_bar.content = ft.Row(
             controls=[
-                ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
-                ft.Text(f"Initial fetch failed:{ex}", size=14)
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Initial fetch failed:{ex}", size=14, color=ft.Colors.BLACK87)
             ]
         )
-        page.snack_bar.bgcolor = ft.Colors.RED_300
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     finally:
         if os.path.exists(CACHE_PATH):
             page.app_state.cache_check_icon.name = ft.Icons.CHECK
@@ -82,8 +82,8 @@ def initial_fetch(page, e):
     page.app_state.info_progress.visible = True
     page.snack_bar.content = ft.Row(
         controls=[
-            ft.Icon(name=ft.Icons.DOWNLOADING, color=ft.Colors.WHITE),
-            ft.Text("Fetching vulnerability types…", size=14)
+            ft.Icon(name=ft.Icons.DOWNLOADING_OUTLINED, color=ft.Colors.BLACK87),
+            ft.Text("Fetching vulnerability types…", size=14, color=ft.Colors.BLACK87)
         ]
     )
     page.snack_bar.bgcolor = ft.Colors.BLUE_400

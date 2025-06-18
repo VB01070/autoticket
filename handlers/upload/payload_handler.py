@@ -55,7 +55,12 @@ def view_payload(page, e):
 
     def copy_payload(e):
         page.set_clipboard(payload_json)
-        page.snack_bar.content = ft.Text("Payload copied to clipboard!")
+        page.snack_bar.content = ft.Row(
+                controls=[
+                    ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("Payload copied to clipboard!", size=14)
+                ]
+            )
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
         page.snack_bar.open = True
         page.update()

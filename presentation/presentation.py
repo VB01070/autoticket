@@ -149,8 +149,13 @@ def retrieve_test_service(page, testUUID):
             pass
 
     print("[!] No service type found.")
-    page.snack_bar.content = ft.Text(f"[!] No service type found.")
-    page.snack_bar.bgcolor = ft.Colors.RED_400
+    page.snack_bar.content = ft.Row(
+        [
+            ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+            ft.Text("No service type found.", color=ft.Colors.BLACK87)
+        ]
+    )
+    page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     page.snack_bar.open = True
     return ""
 
@@ -177,8 +182,13 @@ def retrieve_onetrust_id(page, assetUUID):
                 return item["value"]
             else:
                 print("[!] Asset is missing OneTrust ID value")
-                page.snack_bar.content = ft.Text(f"[!] Asset is missing OneTrust ID value")
-                page.snack_bar.bgcolor = ft.Colors.YELLOW_400
+                page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text("Asset is missing OneTrust ID value", color=ft.Colors.BLACK87)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.ORANGE_400
                 page.snack_bar.open = True
                 return ""
 
@@ -428,8 +438,13 @@ def main(page, e):
     testUUID = page.app_state.presentation_test_uuid_text_field.value
 
     if not testUUID:
-        page.snack_bar.content = ft.Text(f"Test UUID not Found!")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("Test UUID not Found!", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
 
     test = retrieve_test_info(testUUID)
     test_service = retrieve_test_service(page, testUUID)
@@ -447,7 +462,12 @@ def main(page, e):
             test_duration = test_end - test_start
 
     if test_end is None:
-        page.snack_bar.content = ft.Text(f"[!] The test is not Ended yet. End the test before generate the Presentation.")
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("The test is not Ended yet. End the test before generate the Presentation!", color=ft.Colors.BLACK87)
+            ]
+        )
         page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.snack_bar.open = True
         page.update()
@@ -777,8 +797,13 @@ def main(page, e):
         os.remove(output_path)
 
     presentation.save(output_path)
-
-    page.snack_bar.content = ft.Text(f"Presentation generated and stored at: '{output_path}'")
+    page.snack_bar.content = ft.Row(
+        [
+            ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+            ft.Text(f"Presentation generated and stored at: '{output_path}'",
+                    color=ft.Colors.BLACK87)
+        ]
+    )
     page.snack_bar.bgcolor = ft.Colors.GREEN_400
     page.snack_bar.open = True
     page.update()

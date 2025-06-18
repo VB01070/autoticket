@@ -32,8 +32,13 @@ def edit_details(page, e):
 
     test_uuid = page.app_state.test_uuid_text_field.value
     if not test_uuid:
-        page.snack_bar.content = ft.Text(f"You need to enter a test UUID")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text("You need to enter a test UUID", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         page.app_state.test_uuid_text_field.autofocus = True
         page.app_state.test_uuid_text_field.update()
 
@@ -50,13 +55,23 @@ def edit_details(page, e):
                 page.snack_bar.content = ft.Text(f"Test Details Updated")
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
         except requests.exceptions.JSONDecodeError:
-            page.snack_bar.content = ft.Text(f"Check the Test UUID")
-            page.snack_bar.bgcolor = ft.Colors.RED_400
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text("Check the Test UUID", color=ft.Colors.BLACK87)
+                ]
+            )
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     else:
         print(response.status_code)
         print(response.text)
-        page.snack_bar.content = ft.Text(f"Error: {response.status_code}: {response.text}")
-        page.snack_bar.bgcolor = ft.Colors.RED_400
+        page.snack_bar.content = ft.Row(
+            [
+                ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                ft.Text(f"Error: {response.status_code}: {response.text}", color=ft.Colors.BLACK87)
+            ]
+        )
+        page.snack_bar.bgcolor = ft.Colors.ORANGE_400
 
     page.snack_bar.open = True
     page.update()

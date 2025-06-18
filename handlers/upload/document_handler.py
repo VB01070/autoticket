@@ -76,11 +76,11 @@ def load_local_document(page, e):
             print(ex)
             page.snack_bar.content = ft.Row(
                 controls=[
-                    ft.Icon(name=ft.Icons.ERROR, color=ft.Colors.WHITE),
+                    ft.Icon(name=ft.Icons.ERROR, color=ft.Colors.BLACK87),
                     ft.Text(f"Failed to load document. Error: {ex}", size=14)
                 ]
             )
-            page.snack_bar.bgcolor = ft.Colors.RED_400
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
 
@@ -115,8 +115,13 @@ def on_browse(page, e):
             print(f"[DEBUG] Got {len(page.app_state.current_items)} items from Drive")
         except Exception as e:
             print(f"[ERROR] Drive Error: {e}")
-            page.snack_bar.content = ft.Text(f"Drive Error: {e}")
-            page.snack_bar.bgcolor = ft.Colors.RED_400
+            page.snack_bar.content = ft.Row(
+                controls=[
+                    ft.Icon(name=ft.Icons.ERROR_OUTLINE, color=ft.Colors.BLACK87),
+                    ft.Text(f"Google Drive Error: {e}", size=14)
+                ]
+            )
+            page.snack_bar.bgcolor = ft.Colors.ORANGE_400
             page.snack_bar.open = True
             page.update()
 
@@ -198,7 +203,12 @@ def on_browse(page, e):
                 download_file_as_docx(item["id"], local_path)
 
                 # show success
-                page.snack_bar.content = ft.Text(f"Downloaded: {local_path}")
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text(f"Downloaded: {local_path}", size=14)
+                    ]
+                )
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
                 page.snack_bar.open = True
 
@@ -229,8 +239,13 @@ def on_browse(page, e):
 
             except Exception as ex:
                 print(ex)
-                page.snack_bar.content = ft.Text(f"Download Failed: {ex}")
-                page.snack_bar.bgcolor = ft.Colors.RED_400
+                page.snack_bar.content = ft.Row(
+                    controls=[
+                        ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text(f"Download Failed: {ex}", size=14)
+                    ]
+                )
+                page.snack_bar.bgcolor = ft.Colors.ORANGE_400
                 page.snack_bar.open = True
 
             # finally, update the UI

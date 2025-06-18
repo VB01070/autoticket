@@ -57,7 +57,12 @@ def build_ai_management_summary_payload(page, e, test_uuid):
 
         page.app_state.info_progress.visible = False
         page.app_state.management_summary_text_field.value = response.choices[0].message.content
-        page.snack_bar.content = ft.Text(f"All Good!")
+        page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.SMART_TOY_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text("Management summary created", color=ft.Colors.BLACK87)
+                    ]
+                )
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
 
     elif page.app_state.ai_assistant == "Gemini":
@@ -77,7 +82,12 @@ def build_ai_management_summary_payload(page, e, test_uuid):
                 page.app_state.info_progress.visible = False
                 page.app_state.management_summary_text_field.value = summary_text
                 page.app_state.edit_ai_summary_button.disabled = False
-                page.snack_bar.content = ft.Text("All Good!")
+                page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.SMART_TOY_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text("Management summary created", color=ft.Colors.BLACK87)
+                    ]
+                )
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
 
             except Exception as e:
@@ -85,14 +95,24 @@ def build_ai_management_summary_payload(page, e, test_uuid):
                 json_dump = f'{{"error": "Gemini API Error or JSON parsing failed: {e}"}}'
                 page.app_state.info_progress.visible = False
                 page.app_state.management_summary_text_field.value = json_dump
-                page.snack_bar.content = ft.Text(f"FAIL!")
+                page.snack_bar.content = ft.Row(
+                    [
+                        ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                        ft.Text(f"Error calling or parsing Gemini API response: {e}", color=ft.Colors.BLACK87)
+                    ]
+                )
                 page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         except Exception as e:
             print(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
             json_dump =  f'{{"error": "Gemini API Error: {e}"}}'
             page.app_state.info_progress.visible = False
             page.app_state.management_summary_text_field.value = json_dump
-            page.snack_bar.content = ft.Text(f"FAIL")
+            page.snack_bar.content = ft.Row(
+                [
+                    ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
+                    ft.Text(f"Error calling Gemini API with model '{gemini_model_name}': {e}", color=ft.Colors.BLACK87)
+                ]
+            )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
 
     page.snack_bar.open = True
