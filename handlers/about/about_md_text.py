@@ -28,6 +28,6 @@ Application build by the Global Offensive Security Team of Randstad.
 
 ### **Ideas**
 
-- [ ]  Logs the event
+- 
 
 """

@@ -1,6 +1,7 @@
 import flet as ft
 import requests
 from utils.caching import get_headers, BASE_URL
+from logs.logger import logger
 
 
 def edit_details(page, e):
@@ -54,7 +55,8 @@ def edit_details(page, e):
             if "success" in response.json():
                 page.snack_bar.content = ft.Text(f"Test Details Updated")
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
-        except requests.exceptions.JSONDecodeError:
+        except requests.exceptions.JSONDecodeError as e:
+            logger.exception(f"Failed to update test details: {e}")
             page.snack_bar.content = ft.Row(
                 [
                     ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -63,8 +65,7 @@ def edit_details(page, e):
             )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     else:
-        print(response.status_code)
-        print(response.text)
+        logger.error(f"Error: {response.status_code}: {response.text}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),

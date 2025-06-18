@@ -1,6 +1,7 @@
 from docx import Document
 from docx.oxml.ns import qn
 import base64
+from logs.logger import logger
 
 
 def parse_findings(docx_path):
@@ -84,8 +85,8 @@ def parse_findings(docx_path):
         findings.append(current_finding)
 
     # debug
-    print(f"[DEBUG] Total findings: {len(findings)}")
+    logger.debug(f"Total findings: {len(findings)}")
     for idx, f in enumerate(findings, 1):
-        print(f"[DEBUG] Finding {idx} has {len(f['screenshots'])} image(s)")
+        logger.debug(f"Finding {idx} has {len(f['screenshots'])} image(s)")
 
     return findings, metadata_data

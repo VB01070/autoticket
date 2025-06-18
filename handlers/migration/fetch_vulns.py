@@ -4,6 +4,7 @@ from utils.caching import BASE_URL, get_headers
 import flet as ft
 from handlers.migration.render_migration_table import render_migration_table
 from utils.payload_builder import migration_payload_builder
+from logs.logger import logger
 
 # Disable InsecureRequestWarning when verify=False is used
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -11,6 +12,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def fetch_vulns_per_migration(page, test_uuid):
     if not test_uuid:
+        logger.info('No test uuid specified')
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -27,7 +29,7 @@ def fetch_vulns_per_migration(page, test_uuid):
         page.app_state.fetched_migration_vulns = vuln_data
 
     except Exception as e:
-        print(f"Error fetching vulns: {e}")
+        logger.exception(f"Error fetching vulns: {e}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -67,8 +69,7 @@ def migration_fetcher(test_uuid):
             for item in filtered_items
         ]
     except Exception as ex:
-        print(ex)
-
+        logger.exception(f"Error fetching vulns: {ex}")
 
 def build_migration_entries(page):
     combined_entries = []
@@ -81,7 +82,7 @@ def build_migration_entries(page):
 
         selected_asset_uuid = page.app_state.migration_dropdowns.get(uuid).value
         if not selected_asset_uuid:
-            print(f"[!] No asset selected for vuln {uuid}, skipping.")
+            logger.debug(f"[!] No asset selected for vuln {uuid}, skipping.")
             continue
 
         vuln_type_uuid = vuln["vuln_type_uuid"]

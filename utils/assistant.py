@@ -2,6 +2,7 @@ import openai
 import google.generativeai  as genai
 from utils.manage_keys import get_credential
 import json
+from logs.logger import logger
 
 api_key = get_credential("AiAPIKey")
 
@@ -80,11 +81,11 @@ Always respond with only valid JSON. Do not include labels, explanations, or ext
             try:
                 json_object = json.loads(content)
                 return json.dumps(json_object)
-            except json.JSONDecodeError:
-                print(f"Warning: Gemini response was not valid JSON after stripping markdown: {content[:200]}...")
+            except json.JSONDecodeError as e:
+                logger.exception(f"Warning: Gemini response was not valid JSON after stripping markdown: {content[:200]}...")
                 return f'{{"error": "Gemini response was malformed JSON.", "raw_response": {json.dumps(content)}}}'
         except Exception as e:
-            print(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
+            logger.exception(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
             return f'{{"error": "Gemini API Error: {e}"}}'
 
     return '{"error": "Unsupported AI model type"}'

@@ -1,6 +1,7 @@
 from utils.manage_keys import save_credentials, get_credential, delete_credential
 from utils.caching import BASE_URL
 import requests
+from logs.logger import logger
 import flet as ft
 
 
@@ -25,6 +26,7 @@ def save_dashboard_key(page, key, e, reset_callback):
             reset_callback()  # clear the field
             # page.go("/6")     # reload settings view
         else:
+            logger.error("API Key not saved!")
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
@@ -48,6 +50,7 @@ def delete_dashboard_key(page, e):
         )
         page.snack_bar.bgcolor = ft.Colors.GREEN_300
     except Exception as e:
+        logger.exception(f"Failed to delete Dashboard API key: {e}")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),

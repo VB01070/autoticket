@@ -3,6 +3,7 @@ from utils.manage_keys import get_credential
 from utils.caching import initial_fetch_all, load_cache, CACHE_PATH
 import asyncio
 import os
+from logs.logger import logger
 
 
 async def _do_initial_fetch(page):
@@ -38,6 +39,7 @@ async def _do_initial_fetch(page):
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
     except ValueError as e:
         if "API key expired or invalid" in str(e):
+            logger.exception(f"API key expired or invalid: {e}")
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -46,6 +48,7 @@ async def _do_initial_fetch(page):
             )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         else:
+            logger.error("API key not Founded..")
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -54,6 +57,7 @@ async def _do_initial_fetch(page):
             )
             page.snack_bar.bgcolor = ft.Colors.ORANGE_400
     except Exception as ex:
+        logger.exception(f"An error occurred: {ex}")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),

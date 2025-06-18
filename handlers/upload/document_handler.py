@@ -5,6 +5,7 @@ from utils.parser import parse_findings
 from utils.drive_utils import list_folder, download_file_as_docx
 from handlers.upload.display_finding import display_finding
 from handlers.upload.vuln_type_matcher import match_vuln_titles_to_cache
+from logs.logger import logger
 
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
@@ -42,7 +43,6 @@ def load_local_document(page, e):
                 page.snack_bar.open = True
                 page.update()
 
-            # print(f"[DEBUG] {page.app_state.findings}")
             page.app_state.matched_vuln_types = match_vuln_titles_to_cache(page.app_state.findings, page.app_state.cache)
 
             # map UUIDs with findings
@@ -73,7 +73,7 @@ def load_local_document(page, e):
             display_finding(page)
 
         except Exception as ex:
-            print(ex)
+            logger.exception(f"load_local_document: {ex}")
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.ERROR, color=ft.Colors.BLACK87),
@@ -102,19 +102,19 @@ def load_local_document(page, e):
 
 
 def on_browse(page, e):
-    print("[DEBUG] on_browse called")
+    logger.debug("on_browse called")
 
     page.app_state.current_folder = "1LvaID3TriOjpgrqBHkCKk6niC6tJfJLt"
     page.app_state.folder_stack = []
 
     def load_drive_folder(page):
-        print("[DEBUG] load_drive_folder start")
+        logger.debug("load_drive_folder start")
         page.app_state.drive_table.rows.clear()
         try:
             page.app_state.current_items = list_folder(page.app_state.current_folder)
-            print(f"[DEBUG] Got {len(page.app_state.current_items)} items from Drive")
+            logger.debug(f"Got {len(page.app_state.current_items)} items from Drive")
         except Exception as e:
-            print(f"[ERROR] Drive Error: {e}")
+            logger.exception(f"Drive Error: {e}")
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.ERROR_OUTLINE, color=ft.Colors.BLACK87),
@@ -155,10 +155,10 @@ def on_browse(page, e):
                 )
             )
 
-        print("[DEBUG] Rows added to table")
+        logger.debug("Rows added to table")
         page.app_state.drive_table.expand = True  # makes the table stretch to max width
         page.update()
-        print("[DEBUG] Page updated after loading")
+        logger.debug("Page updated after loading")
 
     # === Define button handlers ===
     def handle_back_click(e):
@@ -238,7 +238,7 @@ def on_browse(page, e):
                 page.dialog.open = False
 
             except Exception as ex:
-                print(ex)
+                logger.exception(f"handle_row_click: {ex}")
                 page.snack_bar.content = ft.Row(
                     controls=[
                         ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
@@ -301,7 +301,7 @@ def on_browse(page, e):
     page.dialog = page.app_state.drive_dialog
     page.dialog.open = True
     page.update()
-    print("[DEBUG] Dialog created and opened")
+    logger.debug("Dialog created and opened")
 
     # === Load folder content ===
     page.app_state._last_clicked_folder = None

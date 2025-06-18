@@ -2,10 +2,12 @@ import flet as ft
 from utils.manage_keys import save_credentials, get_credential, delete_credential
 import requests
 import google.generativeai  as genai
+from logs.logger import logger
 
 
 def save_ai_key(page, key, e, reset_callback):
     if not key or key == "":
+        logger.debug("No key provided")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.QUESTION_MARK, color=ft.Colors.WHITE),
@@ -25,6 +27,8 @@ def save_ai_key(page, key, e, reset_callback):
             reset_callback()  # clear the field
             # page.go("/6")     # reload settings view
         else:
+            logger.error("Failed to save AI API key")
+            page.snack_bar.content = ft.Row()
             page.snack_bar.content = ft.Row(
                 controls=[
                     ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
@@ -39,7 +43,7 @@ def save_ai_key(page, key, e, reset_callback):
 
 def check_ai_key(page, e):
     assistant = page.app_state.ai_assistant
-    print(assistant)
+    logger.info(assistant)
     cred = get_credential("AiAPIKey")
     if cred:
         if assistant == "GPT":
@@ -54,6 +58,7 @@ def check_ai_key(page, e):
                 )
                 page.snack_bar.bgcolor = ft.Colors.GREEN_300
             else:
+                logger.error("Failed to get API key")
                 page.snack_bar.content = ft.Row(
                     controls=[
                         ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
@@ -73,6 +78,7 @@ def check_ai_key(page, e):
                 )
                 page.snack_bar.bgcolor = ft.Colors.GREEN_300
             except Exception as e:
+                logger.exception(f"API Key present in Windows Credential Manager, is no longer valid: {e}")
                 page.snack_bar.content = ft.Row(
                     controls=[
                         ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
@@ -81,6 +87,7 @@ def check_ai_key(page, e):
                 )
                 page.snack_bar.bgcolor = ft.Colors.ORANGE_300
     else:
+        logger.debug("There are non credentials saved in Windows Credential Manager!")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),
@@ -104,6 +111,7 @@ def delete_ai_key(page, e):
         )
         page.snack_bar.bgcolor = ft.Colors.GREEN_300
     except Exception as e:
+        logger.exception(f"Failed to delete AI API key: {e}")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),

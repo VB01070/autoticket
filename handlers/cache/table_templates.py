@@ -1,5 +1,6 @@
 import flet as ft
 from utils.caching import load_cache
+from logs.logger import logger
 
 records = []
 filtered_records = []
@@ -72,11 +73,11 @@ def update_table(page):
         )
 
     page.update()
-    print("[DEBUG] Table update complete.")
+    logger.debug("Table update complete.")
 
 
 def show_template(app_state, template):  # Expect app_state
-    print("[DEBUG] show_template called")
+    logger.debug("show_template called")
 
     if isinstance(template, dict):
         content = []
@@ -104,7 +105,7 @@ def show_template(app_state, template):  # Expect app_state
 
 
 def close_dialog(app_state, dialog):  # Expect app_state
-    print("[DEBUG] Dialog closed")
+    logger.debug("Dialog closed")
     dialog.open = False
     app_state.page.update()
 

@@ -1,4 +1,5 @@
 import git
+from logs.logger import logger
 
 
 def check_for_update():
@@ -9,11 +10,9 @@ def check_for_update():
 
         ahead = sum(1 for _ in repo.iter_commits("HEAD..origin/master"))
         if ahead > 0:
-            print("update found")
             return ahead
         else:
-            print("update no found")
             return 0
     except Exception as e:
-        print(e)
+        logger.exception(f"check_for_update: {e}")
         return 0

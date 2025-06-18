@@ -1,8 +1,8 @@
 from time import sleep
 import flet as ft
 from handlers.migration.migrate import migrate_vuln
-from handlers.migration.publish_migrated_vulns import publish_migrated_vulns
 from handlers.manage.delete_vuln import delete_vuln
+from logs.logger import logger
 
 
 
@@ -10,6 +10,7 @@ def run_all_process(page, final_payloads):
     original_vulns = page.app_state.migration_selected_uuids
 
     if not original_vulns:
+        logger.debug("No vulnerabilities found")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -37,7 +38,7 @@ def run_all_process(page, final_payloads):
         )
         page.snack_bar.bgcolor = ft.Colors.GREEN_400
     except Exception as err:
-        print(err)
+        logger.exception(f"Error occurred: {err}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),

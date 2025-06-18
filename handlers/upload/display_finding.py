@@ -5,7 +5,6 @@ def display_finding(page):
     # Basic finding info
     idx = page.app_state.current_finding_index
     finding = page.app_state.findings[idx]
-    # print(f"[DEBUG]: {finding}")
 
     page.app_state.document_content.value = (
         f"Title\n"

@@ -1,8 +1,7 @@
 import base64
 import json
 import tempfile
-import os
-import time
+from logs.logger import logger
 import flet as ft
 from utils.manage_keys import save_credentials, get_credential, delete_credential
 
@@ -12,11 +11,10 @@ def save_google_key(file_path):
         with open(file_path, "rb") as f:
             raw_bytes = f.read()
         encoded = base64.b64encode(raw_bytes).decode("utf-8")
-        print(encoded)
         save_credentials("GoogleKey", encoded)
         return True
     except Exception as e:
-        print(e)
+        logger.error(f"Failed to save Google API key: {e}")
         return False
 
 
@@ -34,6 +32,7 @@ def handle_google_json_selection(page, e):
             )
             page.snack_bar.bgcolor = ft.Colors.GREEN_400
         else:
+            logger.error("Google API key not saved")
             status.value = "Failed to save file"
             page.snack_bar.content = ft.Row(
                 controls=[
@@ -84,6 +83,7 @@ def delete_google_key(page, e):
         )
         page.snack_bar.bgcolor = ft.Colors.GREEN_300
     except Exception as e:
+        logger.exception(f"Failed to delete Google API key: {e}")
         page.snack_bar.content = ft.Row(
             controls=[
                 ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.WHITE),

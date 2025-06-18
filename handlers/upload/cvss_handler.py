@@ -2,11 +2,10 @@ import flet as ft
 from collections import OrderedDict
 from helpers.cvss4 import CVSS4
 from helpers.exceptions import CVSS4Error
+from logs.logger import logger
 
 
 def open_cvss_calculator_dialog(page, e):
-    print("--- Button clicked! Populating and opening dialog... ---")
-
     # Get the dialog shell we created in the view
     dialog = page.app_state.cvss_dialog
     app_state = page.app_state
@@ -45,7 +44,7 @@ def open_cvss_calculator_dialog(page, e):
             # If there's an error, we can update the UI accordingly
             vector_string = "Error: Invalid Vector"
             severity = "Error"
-            print(f"CVSS Error: {ex}")
+            logger.exception(f"CVSS Error: {ex}")
 
         # === THIS IS THE ONLY CHANGE ===
         # Assign the vector_string to the text field instead of the numerical score

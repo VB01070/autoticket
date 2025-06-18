@@ -1,13 +1,14 @@
 import flet as ft
 from handlers.manage.publish_vuln import publish_selected_vulns
 import webbrowser
+from logs.logger import logger
 
 base_link_url = "https://randstad.eu.vulnmanager.com/vulnerabilities"
 
 
 def render_vuln_table(page, vuln_data):
     if not hasattr(page, 'app_state'):
-        print("Error: page.app_state is not initialized.")
+        logger.error("page.app_state is not initialized.")
         return
 
     page.app_state.selected_vuln_uuids = set()
@@ -35,7 +36,7 @@ def render_vuln_table(page, vuln_data):
 
     if not hasattr(page.app_state, 'vuln_table_container') or not isinstance(page.app_state.vuln_table_container,
                                                                              ft.Container):
-        print("Error: page.app_state.vuln_table_container is not initialized as an ft.Container.")
+        logger.error("page.app_state.vuln_table_container is not initialized as an ft.Container.")
         return
 
     if not vuln_data:

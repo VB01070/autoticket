@@ -23,6 +23,7 @@ from utils.caching import BASE_URL as KEEPITSECURE_URL
 from utils.manage_keys import get_credential
 import flet as ft
 from utils import state
+from logs.logger import logger
 
 # Preparing requests
 urllib3.disable_warnings(InsecureRequestWarning)
@@ -145,10 +146,11 @@ def retrieve_test_service(page, testUUID):
         try:
             if services[item["uuid"]]:
                 return services[item["uuid"]]
-        except:
+        except Exception as e:
+            logger.exception(f"Failed to retrieve service: {e}")
             pass
 
-    print("[!] No service type found.")
+    logger.info("No service type found.")
     page.snack_bar.content = ft.Row(
         [
             ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -181,7 +183,7 @@ def retrieve_onetrust_id(page, assetUUID):
             if isinstance(item["value"], str):
                 return item["value"]
             else:
-                print("[!] Asset is missing OneTrust ID value")
+                logger.info("Asset is missing OneTrust ID value")
                 page.snack_bar.content = ft.Row(
                     [
                         ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -255,7 +257,7 @@ def retrieve_vuln_attachments(presentation, slide_layout_name_to_index, vulnUUID
         verify=False
     )
     attachment_list = resp2.json().get("items", [])
-    print(f"FOUND {len(attachment_list)} ATTACHMENTS")
+    logger.debug(f"FOUND {len(attachment_list)} ATTACHMENTS")
 
     # 3) iterate the real attachments
     for attachment in attachment_list:
@@ -326,14 +328,14 @@ def vulns_summary(presentation, vulns):
 
 # Function to replace placeholders with text
 def replace_text(slide, replacements):
-    print("Replacing text on slide:")
+    logger.info("Replacing text on slide:")
     for shape in slide.shapes:
         if shape.has_text_frame:
             for paragraph in shape.text_frame.paragraphs:
                 for run in paragraph.runs:
                     for old_text, new_text in replacements.items():
                         if old_text in run.text:
-                            print(f"  Found placeholder: {old_text} → {new_text}")
+                            logger.info(f"  Found placeholder: {old_text} → {new_text}")
                             run.text = run.text.replace(old_text, new_text)
 
 
@@ -493,7 +495,7 @@ def main(page, e):
     if service_now_request_id:
         replacements["[REQUEST_ID]"] = service_now_request_id.group(1)
     else:
-        print("[!] ServiceNow Request ID not found.")
+        logger.info("ServiceNow Request ID not found.")
 
     # Extract content after "[MANAGEMENT SUMMARY]" using regex
     management_summary_content = re.search(r'[\[{]MANAGEMENT SUMMARY[\]}].*?[\s\t\r\n]+(.*)', _txt, re.DOTALL|re.I)
@@ -502,7 +504,7 @@ def main(page, e):
     if management_summary_content:
         replacements["[MANAGEMENT_SUMMARY]"] = "\n".join(management_summary_content.group(1).splitlines())
     else:
-        print("[!] Management summary content not found.")
+        logger.info("Management summary content not found.")
 
     vulns = retrieve_vulns_by_test(testUUID)
 

@@ -6,6 +6,7 @@ from google.auth.transport.requests import Request
 from googleapiclient.http import MediaIoBaseDownload
 from google_auth_oauthlib.flow import InstalledAppFlow
 from handlers.settings.google import load_google_key
+from logs.logger import logger
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 TOKEN_PATH = 'token.pickle'
@@ -32,14 +33,14 @@ def drive_service():
             with open(TOKEN_PATH, 'wb') as token:
                 pickle.dump(creds, token)
     except Exception as e:
-        print(e)
+        logger.exception(f"An error occurred: {e}")
     finally:
         if temp_file_path and os.path.exists(temp_file_path):
             try:
                 os.remove(temp_file_path)
-                print(f"Deleted temporary key: {temp_file_path}")
+                logger.debug(f"Deleted temporary key: {temp_file_path}")
             except Exception as ex:
-                print(f"Warning: Failed to delete temp file: {ex}")
+                logger.exception(f"Warning: Failed to delete temp file: {ex}")
 
     service = build('drive', 'v3', credentials=creds)
     return service

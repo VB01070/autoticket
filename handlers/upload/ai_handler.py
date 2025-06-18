@@ -4,6 +4,7 @@ import re
 import flet as ft
 from handlers.upload.display_finding import display_finding
 from utils.assistant import generate_ai_suggestion
+from logs.logger import logger
 
 
 def ai_assistance(page, e):
@@ -36,18 +37,15 @@ async def _do_ai_assistance_all(page):
                     ),
                     None
                 )
-                print(f"[DEBUG] raw template type: {type(template)}")
-                print(f"[DEBUG] raw template repr: {template!r}")
-        print(template)
-        print(page.app_state.ai_assistant)
+
         try:
             raw = await asyncio.to_thread(generate_ai_suggestion, title, severity, notes,
                                           page.app_state.ai_assistant, template)
-            print(f"[RAW AI RESPONSE {idx}]:\n{raw}\n")
+            logger.debug(f"RAW AI RESPONSE {idx}")
             try:
                 data = json.loads(raw)
             except Exception as err:
-                print(f"[ERROR] Failed parsing JSON for finding {idx}: {err}")
+                logger.exception(f"Failed parsing JSON for finding {idx}: {err}")
                 data = {"raw": raw}
             page.app_state.ai_suggestions[idx] = data
         except Exception as ex:
@@ -72,9 +70,6 @@ async def _do_ai_assistance_all(page):
     page.app_state.upload_vuln_button.disabled = False
     page.app_state.upload_all_vulns_button.disabled = False
     page.update()
-
-    for item in page.app_state.ai_suggestions_editable:
-        print(item)
 
 
 def parse_editable_ai(text):

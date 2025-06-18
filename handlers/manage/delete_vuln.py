@@ -1,6 +1,7 @@
 import flet as ft
 from utils.caching import BASE_URL, get_headers
 import requests
+from logs.logger import logger
 
 
 def delete_vuln(page, uuid):
@@ -19,7 +20,7 @@ def delete_vuln(page, uuid):
         items = check_response.json().get("items", [])
 
         if not items:
-            print("No vulnerabilities found")
+            logger.debug("No vulnerabilities found")
             page.update()
             return False
 
@@ -27,16 +28,13 @@ def delete_vuln(page, uuid):
             try:
                 response = requests.delete(url, json=body, headers=headers, verify=False)
                 if response.status_code == 200:
-                    print(response.text)
+                    logger.debug(response.text)
                     return True
-
-                    # uuid_field.value = ""
-                    # uuid_field.update()
                 else:
-                    print(response.text)
+                    logger.error(response.text)
                     return False
             except Exception as exc:
-                print(exc)
+                logger.exception(exc)
                 return False
         else:
             page.snack_bar.content = ft.Row(
@@ -51,7 +49,7 @@ def delete_vuln(page, uuid):
             return False
 
     except Exception as ex:
-        print(ex)
+        logger.exception(ex)
         return False
 
     page.update()
@@ -80,7 +78,7 @@ def delete_selected_vulns(page, e):
     try:
         response = requests.delete(url, json=body, headers=headers, verify=False)
         if response.status_code == 200:
-            print(response.text)
+            logger.debug(response.text)
             page.snack_bar.content = ft.Row(
                 [
                     ft.Icon(name=ft.Icons.CHECK_OUTLINED, color=ft.Colors.BLACK87),
@@ -95,7 +93,7 @@ def delete_selected_vulns(page, e):
             vuln_data = get_vuln_list_data(page.app_state.test_uuid_all_text_field.value)
             render_vuln_table(page, vuln_data)
         else:
-            print(response.text)
+            logger.error(response.text)
             page.snack_bar.content = ft.Row(
                 [
                     ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -106,7 +104,7 @@ def delete_selected_vulns(page, e):
             page.snack_bar.open = True
 
     except Exception as ex:
-        print(ex)
+        logger.exception(ex)
         page.snack_bar.content = ft.Row(
                 [
                     ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),

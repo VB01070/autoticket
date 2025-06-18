@@ -1,6 +1,7 @@
 from handlers.manage.tables_handler import render_vuln_table
 from handlers.manage.vuln_data import get_vuln_list_data
 import flet as ft
+from logs.logger import logger
 
 
 def fetch_vulns_by_test(page, test_uuid):
@@ -22,7 +23,7 @@ def fetch_vulns_by_test(page, test_uuid):
         page.app_state.fetched_vulns = vuln_data
 
     except Exception as e:
-        print(f"Error fetching vulns: {e}")
+        logger.exception(f"Error fetching vulns: {e}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING, color=ft.Colors.BLACK87),

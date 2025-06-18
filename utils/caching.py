@@ -4,6 +4,7 @@ import requests
 import time
 from utils.manage_keys import get_credential
 from utils.template_parser import extract_sections_from_template
+from logs.logger import logger
 
 CACHE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "cache", "data_cache.pkl"))
 BASE_URL = "https://randstad.eu.vulnmanager.com"
@@ -52,6 +53,7 @@ def fetch_context():
             all_items.extend([{"uuid": ctx["uuid"], "name": ctx["name"]} for ctx in data.get("items", [])])
         else:
             if response.status_code in (400, 401) and page == 1:
+                logger.error("API key expired or invalid")
                 raise ValueError("API key expired or invalid")
             break
         page += 1
@@ -79,7 +81,7 @@ def fetch_vuln_types_for_context(context_uuid):
                 } for vt in data.get("items", [])
             ])
         elif response.status_code == 400 and page == 1:
-            print("Check the API key.")
+            logger.error("Check the API key.")
             exit(1)
         else:
             break
@@ -102,35 +104,32 @@ def fetch_template_for_vuln_type(vuln_type_uuid):
                 if html:
                     return extract_sections_from_template(html)  # return a dict now
     except Exception as e:
-        print(f"[ERROR] Failed fetching template for {vuln_type_uuid}: {e}")
+        logger.exception(f"Failed fetching template for {vuln_type_uuid}: {e}")
     return None
 
 
 def fetch_contexts_and_vuln_types():
-    print("[DEBUG] Fetching contexts and their vulnerability types...")
+    logger.debug("Fetching contexts and their vulnerability types...")
     cache = load_cache()
     contexts = fetch_context()
     cache["contexts"] = contexts
     cache["vuln_types"] = {}
 
     for ctx in contexts:
-        print(f"[DEBUG] Fetching vuln types for context: {ctx['name']}")
         vuln_types = fetch_vuln_types_for_context(ctx["uuid"])
 
         for vt in vuln_types:
-            print(f"[DEBUG] Fetching template for vuln type: {vt['name']}")
             vt["template_text"] = fetch_template_for_vuln_type(vt["uuid"]) or ""
 
         cache["vuln_types"][ctx["uuid"]] = vuln_types
 
     save_cache(cache)
-    print("[DEBUG] Context + Vuln Type + Templates fetching complete.")
+    logger.debug("Context + Vuln Type + Templates fetching complete.")
 
 
 def initial_fetch_all():
     start = time.time()
-    print("[DEBUG] Performing initial cache fetch...")
     fetch_contexts_and_vuln_types()
     end = time.time()
     execution_time = end - start
-    print(f"[DEBUG] Execution time: {execution_time:.2f}s")
+    logger.info(f"Execution time: {execution_time:.2f}s")

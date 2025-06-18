@@ -1,5 +1,8 @@
 markdown_text = """
 
+###### ***version 0.5***
+- Implementation of logs system
+
 ###### ***version 0.4b***
 - Publish migrate vulnerability
 - Improve Delete original migrated vulnerability flow

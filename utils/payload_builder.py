@@ -20,8 +20,6 @@ def severity_to_cvss(sev: str) -> str:
 
 
 def build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name):
-    print(f"FINDINGS: {type(ai_data)} - {len(ai_data)}")
-    print(f"FINDINGS: {ai_data}")
     details_html = ""  # clean details, every bloody time
 
     details_html += f"""

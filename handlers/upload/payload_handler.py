@@ -2,17 +2,15 @@ import flet as ft
 import json
 from utils.payload_builder import build_payload
 from handlers.upload.ai_editable import parse_editable_ai
+from logs.logger import logger
 
 
 def view_payload(page, e):
-    print("[DEBUG] View Payload clicked")
+    logger.debug("View Payload clicked")
 
     # Build the payload dynamically
     finding = page.app_state.findings[page.app_state.current_finding_index]
-    print("[DEBUG] Finding loaded")
-    # for f in finding:
-    #     print(f"[DEBUG] {f}")
-    # ai_data = app.latest_ai_data
+    logger.debug("Finding loaded")
     ai_raw = page.app_state.ai_suggestions[page.app_state.current_finding_index]
     ai_edit = page.app_state.ai_suggestions_editable[page.app_state.current_finding_index]
     cvss_data = page.app_state.cvss_data[page.app_state.current_finding_index]
@@ -22,26 +20,23 @@ def view_payload(page, e):
         try:
             ai_data = parse_editable_ai(ai_edit)
         except Exception as ex:
-            print(f"[WARN] Failed to parse editable AI text: {ex}")
+            logger.exception(f"Failed to parse editable AI text: {ex}")
             ai_data = ai_raw  # fallback to original AI data
     else:
         ai_data = ai_raw
 
-    print("[DEBUG] AI data loaded")
-    # print(f"f[DEBUG] {ai_data}")
+    logger.debug("AI data loaded")
     uuids = {
         "asset": page.app_state.asset_uuid,
         "vuln_type": page.app_state.vuln_type_uuids[page.app_state.current_finding_index]["vuln_type"],
         "context": page.app_state.vuln_type_uuids[page.app_state.current_finding_index]["context"],
         "test": page.app_state.test_uuid,
     }
-    print(f"[DEBUG] UUIDs: {uuids}")
+    logger.debug(f"UUIDs: {uuids}")
     payload = build_payload(finding, ai_data, uuids, cvss_data, vuln_type_name=None)
-    print("[DEBUG] Payload built")
-    # print(f"[DEBUG] {payload}")
+    logger.debug("Payload built")
     # Convert to pretty JSON
     payload_json = json.dumps(payload, indent=4)
-    print(f"[DEBUG] Payload json: {payload_json}")
     # Create a scrollable text box with copy button
     payload_text = ft.TextField(
         value=payload_json,

@@ -3,6 +3,7 @@ from handlers.test.extract_sections import extract_sections
 import requests
 import urllib3
 import flet as ft
+from logs.logger import logger
 
 # Disable InsecureRequestWarning when verify=False is used
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -33,7 +34,7 @@ def fetch_and_clean_vulns(page, test_uuid):
         response = requests.post(url, headers=headers, json=body, verify=False)
         response.raise_for_status()
     except requests.RequestException as e:
-        print(e)
+        logger.exception(f"Failed to fetch AI API key: {e}")
         return []
 
     items = response.json().get("items", [])

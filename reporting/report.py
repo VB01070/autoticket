@@ -9,6 +9,7 @@ from reporting.configuration.configuration import ReportConfiguration
 from reporting.utils.starting_info_parsed import StartingInfoParsed
 from reporting.utils.fetcher import Fetcher
 from reporting.utils.builder import Builder
+from logs.logger import logger
 
 
 def generate_report_html(page):
@@ -42,6 +43,7 @@ def generate_pdf(page):
     html_file_path = page.html_file_path  # use the path saved in app
 
     if not os.path.exists(html_file_path):
+        logger.info(f"No file found at {html_file_path}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -80,6 +82,7 @@ def generate_pdf(page):
         page.update()
         return output_path
     except Exception as e:
+        logger.exception(f"Failed to generate report {output_path}. Error: {e}")
         page.snack_bar.content = ft.Row(
             [
                 ft.Icon(name=ft.Icons.WARNING_OUTLINED, color=ft.Colors.BLACK87),
@@ -112,7 +115,8 @@ def preview_pdf_in_memory(page):
 
     try:
         os.startfile(temp_pdf_path)  # Windows
-    except AttributeError:
+    except AttributeError as e:
+        logger.exception(f"Failed to preview report {temp_pdf_path}. Error: {e}")
         webbrowser.open(f"file://{temp_pdf_path}")  # Fallback for other OSes
 
     # Clean up the temp file after it's no longer in use
@@ -122,12 +126,13 @@ def preview_pdf_in_memory(page):
             try:
                 os.rename(path, path)
                 break
-            except PermissionError:
+            except PermissionError as e:
+                logger.exception(f"Failed to rename file {path}. Error: {e}")
                 time.sleep(1)
         try:
             os.remove(path)
-            print(f"Temp file removed: {path}")
+            logger.info(f"Temp file removed: {path}")
         except Exception as e:
-            print(f"Cleanup failed: {e}")
+            logger.exception(f"Cleanup failed: {e}")
 
     threading.Thread(target=cleanup_when_closed, args=(temp_pdf_path,), daemon=True).start()

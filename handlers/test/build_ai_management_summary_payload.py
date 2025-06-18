@@ -5,11 +5,11 @@ import google.generativeai  as genai
 from collections import Counter
 from handlers.test.fetch_and_clean_vulns import fetch_and_clean_vulns
 from utils.manage_keys import get_credential
+from logs.logger import logger
 
 
 def build_ai_management_summary_payload(page, e, test_uuid):
     vulns = fetch_and_clean_vulns(page, test_uuid)
-    print(vulns)
     order = ["Critical", "High", "Medium", "Low", "Info"]
     counts = Counter(v["severity"] for v in vulns)
 
@@ -91,7 +91,7 @@ def build_ai_management_summary_payload(page, e, test_uuid):
                 page.snack_bar.bgcolor = ft.Colors.GREEN_400
 
             except Exception as e:
-                print(f"Error calling or parsing Gemini API response: {e}")
+                logger.exception(f"Error calling or parsing Gemini API response: {e}")
                 json_dump = f'{{"error": "Gemini API Error or JSON parsing failed: {e}"}}'
                 page.app_state.info_progress.visible = False
                 page.app_state.management_summary_text_field.value = json_dump
@@ -103,7 +103,7 @@ def build_ai_management_summary_payload(page, e, test_uuid):
                 )
                 page.snack_bar.bgcolor = ft.Colors.ORANGE_400
         except Exception as e:
-            print(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
+            logger.exception(f"Error calling Gemini API with model '{gemini_model_name}': {e}")
             json_dump =  f'{{"error": "Gemini API Error: {e}"}}'
             page.app_state.info_progress.visible = False
             page.app_state.management_summary_text_field.value = json_dump

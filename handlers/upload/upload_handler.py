@@ -6,6 +6,7 @@ from utils.payload_builder import build_payload
 from handlers.upload.ai_editable import parse_editable_ai
 from utils.caching import BASE_URL
 from utils.manage_keys import get_credential
+from logs.logger import logger
 
 
 def upload_all_vulnerabilities(page, e):
@@ -19,6 +20,7 @@ def upload_all_vulnerabilities(page, e):
         try:
             ai_data = parse_editable_ai(ai_edit)
         except Exception as ex:
+            logger.exception(f"Failed to parse {ai_edit}: {ex}")
             ai_data = ai_raw
     else:
         ai_data = ai_raw
@@ -53,6 +55,7 @@ def upload_all_vulnerabilities(page, e):
             page.snack_bar.open = True
             page.update()
         else:
+            logger.error(f"Failed to submit vulnerability: {response.status_code}")
             page.app_state.info_progress.visible = False
             page.snack_bar.content = ft.Row(
                 controls=[
@@ -64,6 +67,7 @@ def upload_all_vulnerabilities(page, e):
             page.snack_bar.open = True
             page.update()
     except Exception as ex:
+        logger.exception(f"Failed to submit vulnerability: {ex}")
         page.app_state.info_progress.visible = False
         page.snack_bar.content = ft.Row(
             controls=[
@@ -83,12 +87,12 @@ async def _upload_single_vuln(page, idx, finding, ai_data, cvss_data, uuids, url
         response = await asyncio.to_thread(requests.post, url, headers=headers, json=payload)
 
         if response.status_code != 200:
-            print(f"[ERROR] Upload failed for finding {idx + 1}: {response.status_code} - {response.text}")
+            logger.error(f"Upload failed for finding {idx + 1}: {response.status_code} - {response.text}")
             return False
         return True
 
     except Exception as ex:
-        print(f"[EXCEPTION] Failed to upload finding {idx + 1}: {ex}")
+        logger.exception(f"Failed to upload finding {idx + 1}: {ex}")
         return False
 
 
@@ -126,7 +130,8 @@ async def _do_upload_all_vulns(page):
         if ai_edit and isinstance(ai_edit, str):
             try:
                 ai_data = parse_editable_ai(ai_edit)
-            except Exception:
+            except Exception as ex:
+                logger.exception(f"Failed to parse {ai_edit}: {ex}")
                 ai_data = ai_raw
         else:
             ai_data = ai_raw
